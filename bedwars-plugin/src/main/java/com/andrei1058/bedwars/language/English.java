@@ -94,6 +94,21 @@ public class English extends Language {
                 "&e/party accept <player> &7- &bAccept a party invite",
                 "&e/party disband &7- &bDisbands the party")
         );
+        yml.addDefault(Messages.COMMAND_MAP_CONSOLE_DENIED, "{prefix}&cThis command cannot be executed from the console.");
+        yml.addDefault(Messages.COMMAND_MAP_NOT_IN_GAME, "{prefix}&cYou are not in a Bed Wars game!");
+        yml.addDefault(Messages.COMMAND_MAP_DISPLAY, "{prefix}&aYou are currently playing on &e{map}.");
+        yml.addDefault(Messages.COMMAND_GMC_CONSOLE_DENIED, "{prefix}&cThis command cannot be executed from the console.");
+        yml.addDefault(Messages.COMMAND_GMC_NO_PERMISSION, "{prefix}&cYou do not have permission to use this command.");
+        yml.addDefault(Messages.COMMAND_GMC_DISABLED, "{prefix}&cYou cannot use this command while in a game.");
+        yml.addDefault(Messages.COMMAND_GMC_ENABLED, "{prefix}&aGame mode set to GMC.");
+        yml.addDefault(Messages.COMMAND_GMSP_CONSOLE_DENIED, "{prefix}&cThis command cannot be executed from the console.");
+        yml.addDefault(Messages.COMMAND_GMSP_DISABLED, "{prefix}&cYou cannot use this command while in a game.");
+        yml.addDefault(Messages.COMMAND_GMSP_NO_PERMISSION, "{prefix}&cYou do not have permission to use this command.");
+        yml.addDefault(Messages.COMMAND_GMSP_ENABLED, "{prefix}&aGame mode set to Spectator.");
+        yml.addDefault(Messages.COMMAND_GMS_CONSOLE_DENIED, "{prefix}&cThis command cannot be executed from the console.");
+        yml.addDefault(Messages.COMMAND_GMS_NO_PERMISSION, "{prefix}&cYou do not have permission to use this command.");
+        yml.addDefault(Messages.COMMAND_GMS_ENABLED, "{prefix}&aGame mode set to Survival.");
+        yml.addDefault(Messages.COMMAND_GMS_DISABLED, "{prefix}&cYou cannot use this command while in a game.");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");
