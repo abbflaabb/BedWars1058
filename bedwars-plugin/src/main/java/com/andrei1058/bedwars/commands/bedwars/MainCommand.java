@@ -88,7 +88,10 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
         new Level(this, "level");
         new Reload(this, "reload"); //priority 11
         new CmdList(this, "cmds"); //priority 20
-
+        new Map(this, "map"); //priority 21
+        new Gmc(this, "gmc"); //priority 22
+        new Gms(this, "gms"); //priority 23
+        new Gmsp(this, "gmsp"); //priority 24
         /* Arena setup commands (in world) */
         new AutoCreateTeams(this, "autoCreateTeams");
         new SetWaitingSpawn(this, "setWaitingSpawn");
@@ -130,7 +133,10 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
                         sendSubCommands((Player) s);
                     }
                 } else {
-                    s.sendMessage("§f   bw safemode §eenable/ disable");
+                    s.sendMessage("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Console Commands");
+                    s.sendMessage("");
+                    s.sendMessage("§fUse §6/" + mainCmd + " reload §fto reload a Lang.");
+
                 }
             } else {
                 if (s instanceof ConsoleCommandSender) {
