@@ -1,6 +1,6 @@
 /*
- * BedWars1058 - A bed wars mini-game.
- * Copyright (C) 2021 Andrei Dascălu
+ * BedWars2023 - A bed wars mini-game.
+ * Copyright (C) 2024 Tomas Keuper
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Contact e-mail: andrew.dascalu@gmail.com
+ * Contact e-mail: contact@fyreblox.com
  */
 
 package com.andrei1058.bedwars.arena.spectator;
@@ -57,27 +57,25 @@ import static com.andrei1058.bedwars.api.language.Language.getMsg;
 public class SpectatorListeners implements Listener {
 
     @EventHandler
-    public void onSpectatorItemInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        ItemStack i = nms.getItemInHand(p);
-        if (i == null) return;
-        if (i.getType() == Material.AIR) return;
-        if (!nms.isCustomBedWarsItem(i)) return;
-        IArena a = Arena.getArenaByPlayer(p);
+    public void onSpectatorBlockInteract(PlayerInteractEvent e) {
+        if (e.getClickedBlock() == null) return; // Allow use of command items when clicked in air
+        IArena a = Arena.getArenaByPlayer(e.getPlayer());
         if (a == null) return;
-        if (!a.isSpectator(p)) return;
-
-        // Disable spectator interact
-        e.setCancelled(true);
+        if (a.isSpectator(e.getPlayer()) || a.getRespawnSessions().containsKey(e.getPlayer())) {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
-    public void onSpectatorBlockInteract(PlayerInteractEvent e) {
-        if (e.getClickedBlock() == null) return;
-        if (!BedWars.getAPI().getArenaUtil().isSpectating(e.getPlayer())) return;
-        if (e.getClickedBlock().getType().toString().contains("DOOR"))
-        // Disable spectator interact
-            e.setCancelled(true);
+    // Disable spectator interact with item frames
+    public void onItemFrame(PlayerInteractEntityEvent e) {
+        IArena a = Arena.getArenaByPlayer(e.getPlayer());
+        if (a == null) return;
+        if (e.getRightClicked().getType().equals(EntityType.ITEM_FRAME)) {
+            if (a.isSpectator(e.getPlayer()) || a.getRespawnSessions().containsKey(e.getPlayer())) {
+                e.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -177,7 +175,7 @@ public class SpectatorListeners implements Listener {
             p.getInventory().setHeldItemSlot(5);
             p.setGameMode(GameMode.SPECTATOR);
             p.setSpectatorTarget(target);
-            nms.sendTitle(p, event.getTitle().apply(p).replace("{playername}", p.getName()).replace("{player}", target.getDisplayName()), event.getSubTitle().apply(p).replace("{player}", target.getDisplayName()), event.getFadeIn(), event.getStay(), event.getFadeOut());
+            nms.sendTitle(p, event.getTitle().apply(p).replace("%bw_playername%", p.getName()).replace("%bw_player%", target.getDisplayName()), event.getSubTitle().apply(p).replace("%bw_player%", target.getDisplayName()), event.getFadeIn(), event.getStay(), event.getFadeOut());
         }
     }
 

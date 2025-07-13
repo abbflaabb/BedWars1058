@@ -47,6 +47,21 @@ public class Messages {
     /**
      * General commands reply
      */
+    public static String COMMAND_GMC_CONSOLE_DENIED = "cmd-gmc-console-denied";
+    public static String COMMAND_GMC_NO_PERMISSION = "cmd-gmc-no-permission";
+    public static String COMMAND_GMC_DISABLED = "cmd-gmc-disabled";
+    public static String COMMAND_GMC_ENABLED = "cmd-gmc-enabled";
+    public static String COMMAND_GMSP_CONSOLE_DENIED = "cmd-gmsp-console-denied";
+    public static String COMMAND_GMSP_NO_PERMISSION = "cmd-gmsp-no-permission";
+    public static String COMMAND_GMSP_DISABLED = "cmd-gmsp-disabled";
+    public static String COMMAND_GMSP_ENABLED = "cmd-gmsp-enabled";
+    public static String COMMAND_GMS_CONSOLE_DENIED = "cmd-gms-console-denied";
+    public static String COMMAND_GMS_NO_PERMISSION = "cmd-gms-no-permission";
+    public static String COMMAND_GMS_DISABLED = "cmd-gms-disabled";
+    public static String COMMAND_GMS_ENABLED = "cmd-gms-enabled";
+    public static String COMMAND_MAP_CONSOLE_DENIED = "cmd-map-console-denied";
+    public static String COMMAND_MAP_NOT_IN_GAME = "cmd-map-not-in-game";
+    public static String COMMAND_MAP_DISPLAY = "cmd-map-display";
     public static String COMMAND_MAIN = "cmd-main-list";
     public static String COMMAND_LANG_LIST_HEADER = "cmd-lang-list-header";
     public static String COMMAND_LANG_LIST_FORMAT = "cmd-lang-list-format";
