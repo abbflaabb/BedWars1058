@@ -308,6 +308,9 @@ public class BedWars extends JavaPlugin {
         if (!(getServerType() == ServerType.BUNGEE && autoscale)) {
             registerEvents(new JoinHandlerCommon());
         }
+        Bukkit.getPluginManager().registerEvents(new ShopListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BuildLimit(), this);
+
 
         // Register setup-holograms fix
         registerEvents(new ChunkLoad());
