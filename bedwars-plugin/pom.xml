@@ -5,10 +5,10 @@
     <parent>
         <artifactId>BedWars1058</artifactId>
         <groupId>com.andrei1058.bedwars</groupId>
-        <version>25.2</version>
+        <version>1.2.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>bedwars-plugin</artifactId>
+    <artifactId>BedWarsAquixPlugin</artifactId>
     <packaging>jar</packaging>
     <version>${project.parent.version}</version>
 
@@ -315,7 +315,7 @@
         <dependency>
             <groupId>com.andrei1058.spigot.sidebar</groupId>
             <artifactId>sidebar-v1_20_R4</artifactId>
-            <version>24.2</version>
+            <version>23.12</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

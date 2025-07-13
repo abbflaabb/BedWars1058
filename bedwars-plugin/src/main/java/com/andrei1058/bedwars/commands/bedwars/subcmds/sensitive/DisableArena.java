@@ -1,6 +1,6 @@
 /*
- * BedWars1058 - A bed wars mini-game.
- * Copyright (C) 2021 Andrei Dascălu
+ * BedWars2023 - A bed wars mini-game.
+ * Copyright (C) 2024 Tomas Keuper
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Contact e-mail: andrew.dascalu@gmail.com
+ * Contact e-mail: contact@fyreblox.com
  */
 
 package com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive;
@@ -32,7 +32,6 @@ import com.andrei1058.bedwars.commands.bedwars.MainCommand;
 import com.andrei1058.bedwars.configuration.Permissions;
 import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -51,27 +50,28 @@ public class DisableArena extends SubCommand {
 
     @Override
     public boolean execute(String[] args, CommandSender s) {
-        if (s instanceof ConsoleCommandSender) return false;
-        Player p = (Player) s;
-        if (!MainCommand.isLobbySet(p)) return true;
+        if (!MainCommand.isLobbySet()) {
+            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            return true;
+        }
         if (args.length != 1) {
-            p.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " "+getSubCommandName()+" <mapName>");
+            s.sendMessage("§c▪ §7Usage: §o/" + getParent().getName() + " "+getSubCommandName()+" <mapName>");
             return true;
         }
         if (!BedWars.getAPI().getRestoreAdapter().isWorld(args[0])) {
-            p.sendMessage("§c▪ §7" + args[0] + " doesn't exist!");
+            s.sendMessage("§c▪ §7" + args[0] + " is a world and not an arena!");
             return true;
         }
         IArena a = Arena.getArenaByName(args[0]);
         if (a == null) {
-            p.sendMessage("§c▪ §7This arena is disabled yet!");
+            s.sendMessage("§c▪ §7This has already been disabled or doesnt exist!");
             return true;
         }
         if (a.getStatus() == GameState.playing) {
-            p.sendMessage("§6 ▪ §7There is a game running on this Arena, please disable after the game!");
+            s.sendMessage("§6 ▪ §7There is a game running on this Arena, please disable after the game!");
             return true;
         }
-        p.sendMessage("§6 ▪ §7Disabling arena...");
+        s.sendMessage("§6 ▪ §7Disabling arena...");
         a.disable();
         return true;
     }
@@ -87,12 +87,11 @@ public class DisableArena extends SubCommand {
 
     @Override
     public boolean canSee(CommandSender s, com.andrei1058.bedwars.api.BedWars api) {
-        if (s instanceof ConsoleCommandSender) return false;
-
-        Player p = (Player) s;
-        if (Arena.isInArena(p)) return false;
-
-        if (SetupSession.isInSetupSession(p.getUniqueId())) return false;
+        if (s instanceof Player) {
+            Player p = (Player) s;
+            if (Arena.isInArena(p)) return false;
+            if (SetupSession.isInSetupSession(p.getUniqueId())) return false;
+        }
         return hasPermission(s);
     }
 }

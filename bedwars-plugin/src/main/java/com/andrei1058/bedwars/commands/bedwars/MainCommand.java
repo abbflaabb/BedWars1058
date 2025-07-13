@@ -1,23 +1,3 @@
-/*
- * BedWars1058 - A bed wars mini-game.
- * Copyright (C) 2021 Andrei Dascălu
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: andrew.dascalu@gmail.com
- */
-
 package com.andrei1058.bedwars.commands.bedwars;
 
 import com.andrei1058.bedwars.BedWars;
@@ -39,7 +19,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 
@@ -121,7 +100,7 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
     public boolean execute(CommandSender s, String st, String[] args) {
 
         if (args.length == 0) {
-            /* Set op commands*/
+            /* Set op commands, console always has permission*/
             if ((s.isOp() || s.hasPermission(BedWars.mainCmd + ".*"))) {
                 if (s instanceof Player) {
                     if (SetupSession.isInSetupSession(((Player) s).getUniqueId())) {
@@ -130,19 +109,15 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
                         s.sendMessage("");
                         s.sendMessage("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Admin Commands");
                         s.sendMessage("");
-                        sendSubCommands((Player) s);
+                        sendSubCommands(s);
                     }
                 } else {
+                    s.sendMessage("");
                     s.sendMessage("§8§l" + dot + " §6" + plugin.getDescription().getName() + " v" + plugin.getDescription().getVersion() + " §7- §c Console Commands");
                     s.sendMessage("");
-                    s.sendMessage("§fUse §6/" + mainCmd + " reload §fto reload a Lang.");
-
+                    sendSubCommands(s);
                 }
             } else {
-                if (s instanceof ConsoleCommandSender) {
-                    s.sendMessage("§fNo console commands available atm.");
-                    return true;
-                }
                 /* Send player commands */
                 Bukkit.dispatchCommand(s, mainCmd + " cmds");
             }
@@ -188,11 +163,21 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
     }
 
     @Override
-    public void sendSubCommands(Player p) {
-        for (int i = 0; i <= 20; i++) {
-            for (SubCommand sb : getSubCommands()) {
-                if (sb.getPriority() == i && sb.isShow() && sb.canSee(p, BedWars.getAPI())) {
-                    p.spigot().sendMessage(sb.getDisplayInfo());
+    public void sendSubCommands(CommandSender player) {
+        if (player instanceof Player){
+            for (int i = 0; i <= 20; i++) {
+                for (SubCommand sb : getSubCommands()) {
+                    if (sb.getPriority() == i && sb.isShow() && sb.canSee(player, BedWars.getAPI())) {
+                        ((Player) player).spigot().sendMessage(sb.getDisplayInfo());
+                    }
+                }
+            }
+        }else {
+            for (int i = 0; i <= 20; i++) {
+                for (SubCommand sb : getSubCommands()) {
+                    if (sb.getPriority() == i && sb.isShow() && sb.canSee(player, BedWars.getAPI())) {
+                        player.sendMessage(sb.getDisplayInfo().getText());
+                    }
                 }
             }
         }
@@ -228,18 +213,12 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
     }
 
     /**
-     * Check if lobby location is set, else send a error message to the player
+     * Check if lobby location is set
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isLobbySet(Player p) {
+    public static boolean isLobbySet() {
         if (BedWars.getServerType() == ServerType.BUNGEE) return true;
-        if (config.getLobbyWorldName().isEmpty()) {
-            if (p != null) {
-                p.sendMessage("§c▪ §7You have to set the lobby location first!");
-            }
-            return false;
-        }
-        return true;
+        return !config.getLobbyWorldName().isEmpty();
     }
 
     @Override

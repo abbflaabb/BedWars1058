@@ -1,3 +1,23 @@
+/*
+ * BedWars2023 - A bed wars mini-game.
+ * Copyright (C) 2024 Tomas Keuper
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Contact e-mail: contact@fyreblox.com
+ */
+
 package com.andrei1058.bedwars.arena.upgrades;
 
 import com.andrei1058.bedwars.BedWars;
@@ -10,11 +30,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import static com.andrei1058.bedwars.BedWars.config;
-import static com.andrei1058.bedwars.BedWars.plugin;
 
 public class HealPoolTask extends BukkitRunnable {
 
@@ -42,7 +60,7 @@ public class HealPoolTask extends BukkitRunnable {
         this.maxZ = (teamspawn.getBlockZ() + radius);
         this.minZ = (teamspawn.getBlockZ() - radius);
         this.arena = bwt.getArena();
-        this.runTaskTimerAsynchronously(plugin, 0, 80L);
+        this.runTaskTimerAsynchronously(BedWars.plugin, 0, 30L);
         healPoolTasks.add(this);
     }
 
@@ -59,9 +77,9 @@ public class HealPoolTask extends BukkitRunnable {
                 for (int z = minZ; z <= maxZ; z++) {
                     l = new Location(arena.getWorld(), x + .5, y + .5, z +.5);
                     if (l.getBlock().getType() != Material.AIR) continue;
-                    int chance = r.nextInt(9);
+                    int chance = r.nextInt(250);
                     if (chance == 0) {
-                        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_SEEN_TEAM_ONLY)) {
+                        if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_SEEN_TEAM_ONLY)) {
                             for (Player p : bwt.getMembers()) {
                                 BedWars.nms.playVillagerEffect(p, l);
                             }
@@ -85,35 +103,45 @@ public class HealPoolTask extends BukkitRunnable {
         }
         return false;
     }
-    public static void removeForArena(IArena a){
+
+    public static void removeForArena(IArena a) {
         if (healPoolTasks.isEmpty() || a == null) return;
-        for (HealPoolTask hpt: healPoolTasks) {
+
+        Iterator<HealPoolTask> iterator = healPoolTasks.iterator();
+        while (iterator.hasNext()) {
+            HealPoolTask hpt = iterator.next();
             if (hpt == null) continue;
-            if (hpt.getArena().equals(a)){
+            if (hpt.getArena().equals(a)) {
                 hpt.cancel();
-                healPoolTasks.remove(hpt);
+                iterator.remove();
             }
         }
     }
 
-    public  static void removeForArena(String a){
-        if (healPoolTasks == null || healPoolTasks.isEmpty()  || (a == null)) return;
-        for (HealPoolTask hpt: healPoolTasks) {
+    public static void removeForArena(String a) {
+        if (healPoolTasks == null || healPoolTasks.isEmpty() || a == null) return;
+
+        Iterator<HealPoolTask> iterator = healPoolTasks.iterator();
+        while (iterator.hasNext()) {
+            HealPoolTask hpt = iterator.next();
             if (hpt == null) continue;
-            if (hpt.getArena().getWorldName().equals(a)){
+            if (hpt.getArena().getWorldName().equals(a)) {
                 hpt.cancel();
-                healPoolTasks.remove(hpt);
+                iterator.remove();
             }
         }
     }
 
-    public  static void removeForTeam(ITeam team){
-        if (healPoolTasks == null || healPoolTasks.isEmpty()  || (team == null)) return;
-        for (HealPoolTask hpt:healPoolTasks) {
+    public static void removeForTeam(ITeam team) {
+        if (healPoolTasks == null || healPoolTasks.isEmpty() || team == null) return;
+
+        Iterator<HealPoolTask> iterator = healPoolTasks.iterator();
+        while (iterator.hasNext()) {
+            HealPoolTask hpt = iterator.next();
             if (hpt == null) continue;
-            if (hpt.getBwt().equals(team)){
+            if (hpt.getBwt().equals(team)) {
                 hpt.cancel();
-                healPoolTasks.remove(hpt);
+                iterator.remove();
             }
         }
     }

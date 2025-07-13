@@ -20,7 +20,7 @@
 
 package com.andrei1058.bedwars.api.command;
 
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public interface ParentCommand {
      * This includes subCommands with showInList true only
      * He can see only commands which he have permission
      */
-    void sendSubCommands(Player p);
+    void sendSubCommands(CommandSender player);
 
     /**
      * Get available subCommands

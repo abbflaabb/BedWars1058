@@ -60,7 +60,7 @@ public class ArenaGroup extends SubCommand {
     public boolean execute(String[] args, CommandSender s) {
         if (s instanceof ConsoleCommandSender) return false;
         Player p = (Player) s;
-        if (!MainCommand.isLobbySet(p)) return true;
+        if (!MainCommand.isLobbySet()) return true;
         if (args.length < 2 && (args.length < 1 || !args[0].equalsIgnoreCase("list"))) {
             sendArenaGroupCmdList(p);
         } else if (args[0].equalsIgnoreCase("create")) {
