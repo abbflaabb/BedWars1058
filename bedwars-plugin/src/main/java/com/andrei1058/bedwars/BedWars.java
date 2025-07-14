@@ -90,6 +90,7 @@ public class BedWars extends JavaPlugin {
     public static String mainCmd = "bw", link = "WWW.Aquix.egg.pl.support";
     public static ConfigManager signs, generators;
     public static MainConfig config;
+    public static InvsibltyConfig InvsibltyConfig;
     public static ShopManager shop;
     public static StatsManager statsManager;
     public static BedWars plugin;
@@ -180,7 +181,7 @@ public class BedWars extends JavaPlugin {
         new Turkish();
 
         config = new MainConfig(this, "config");
-
+        InvsibltyConfig = new InvsibltyConfig(this, "invisibility", this.getDataFolder().getPath());
         generators = new GeneratorsConfig(this, "generators", this.getDataFolder().getPath());
         // Initialize signs config after the main config
         if (getServerType() != ServerType.BUNGEE) {
@@ -194,7 +195,6 @@ public class BedWars extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        InvsibltyConfig invsibltyConfig = new InvsibltyConfig(this, "config", this.getDataFolder().getPath());
 
         nms.registerVersionListeners();
 
@@ -260,7 +260,7 @@ public class BedWars extends JavaPlugin {
                 new TargetListener(), new LangListener(), new Warnings(this), new ChatAFK(),
                 new GameEndListener(), new DefaultStatsHandler()
         );
-        getServer().getPluginManager().registerEvents(new ArenaListener(this, invsibltyConfig), this);
+        getServer().getPluginManager().registerEvents(new ArenaListener(this, InvsibltyConfig), this);
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_HEAL_POOL_ENABLE)) {
             registerEvents(new HealPoolListner());
