@@ -6,6 +6,7 @@ package com.andrei1058.bedwars.listeners;
 import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.events.gameplay.GameStateChangeEvent;
+import com.andrei1058.bedwars.api.events.player.PlayerKillEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerReSpawnEvent;
 import com.andrei1058.bedwars.configuration.InvsibltyConfig;
 import org.bukkit.Bukkit;
@@ -84,5 +85,21 @@ public class ArenaListener implements Listener {
     @EventHandler
     public void onRespawning(PlayerReSpawnEvent e) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> e.getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY), 3L);
+    }
+
+    @EventHandler
+    public void onKill(PlayerKillEvent e) {
+        if (invsibltyConfig.isDeathAnimationDisabled()) {
+            e.getVictim().remove();
+        }
+
+        if (invsibltyConfig.isKillSoundEnabled() && e.getKiller() != null) {
+            e.getKiller().playSound(
+                    e.getKiller().getLocation(),
+                    invsibltyConfig.getKillSound(),
+                    invsibltyConfig.getKillSoundVolume(),
+                    invsibltyConfig.getKillSoundPitch()
+            );
+        }
     }
 }

@@ -194,7 +194,7 @@ public class BedWars extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        InvsibltyConfig invsibltyConfig = new InvsibltyConfig(this);
+        InvsibltyConfig invsibltyConfig = new InvsibltyConfig(this, "config", this.getDataFolder().getPath());
 
         nms.registerVersionListeners();
 
