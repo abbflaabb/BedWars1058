@@ -9,6 +9,16 @@ public class InvsibltyConfig extends ConfigManager {
 
     public InvsibltyConfig(Plugin plugin, String name, String dir) {
         super(plugin, name, dir);
+        YamlConfiguration yml = getYml();
+        yml.addDefault("enable-wood-sword-disappearance", true);
+        yml.addDefault("enable-respawn-session-invisibility", true);
+        yml.addDefault("disable-death-animation", false);
+        yml.addDefault("kill-sound-settings.enabled", false);
+        yml.addDefault("kill-sound-settings.sound", "ENTITY_PLAYER_LEVELUP");
+        yml.addDefault("kill-sound-settings.volume", 1.0);
+        yml.addDefault("kill-sound-settings.pitch", 1.0);
+        yml.options().copyDefaults(true);
+        save();
     }
 
     public boolean isWoodSwordDisappearanceEnabled() {
