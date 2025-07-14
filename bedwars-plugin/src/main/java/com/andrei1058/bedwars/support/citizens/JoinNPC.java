@@ -1,23 +1,3 @@
-/*
- * BedWars1058 - A bed wars mini-game.
- * Copyright (C) 2021 Andrei Dascălu
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * Contact e-mail: andrew.dascalu@gmail.com
- */
-
 package com.andrei1058.bedwars.support.citizens;
 
 import com.andrei1058.bedwars.BedWars;
@@ -26,7 +6,6 @@ import com.andrei1058.bedwars.api.configuration.ConfigPath;
 import com.andrei1058.bedwars.arena.Arena;
 import com.andrei1058.bedwars.arena.Misc;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
-import lombok.Getter;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
@@ -47,11 +26,6 @@ import java.util.Map;
 import static com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive.NPC.createArmorStand;
 
 public class JoinNPC {
-    /**
-     * -- GETTER --
-     *  Check if Citizens is loaded correctly
-     */
-    @Getter
     private static boolean citizensSupport = false;
 
     /* Here are stored NPC holograms without colors and placeholders translated used for refresh*/
@@ -59,6 +33,13 @@ public class JoinNPC {
     /* Here are stored all the NPCs*/
     public static HashMap<Integer, String> npcs = new HashMap<>();
 
+
+    /**
+     * Check if Citizens is loaded correctly
+     */
+    public static boolean isCitizensSupport() {
+        return citizensSupport;
+    }
 
     /**
      * Set Citizens support
