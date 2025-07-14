@@ -1,6 +1,6 @@
 /*
- * BedWars1058 - A bed wars mini-game.
- * Copyright (C) 2021 Andrei Dascălu
+ * BedWars2023 - A bed wars mini-game.
+ * Copyright (C) 2024 Tomas Keuper
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * Contact e-mail: andrew.dascalu@gmail.com
+ * Contact e-mail: contact@fyreblox.com
  */
 
 package com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive;
@@ -48,10 +48,9 @@ public class Reload extends SubCommand {
 
     @Override
     public boolean execute(String[] args, CommandSender s) {
-        if (s instanceof Player) {
-            if (!MainCommand.isLobbySet((Player) s)) return true;
-        } else {
-            if (!MainCommand.isLobbySet(null)) return true;
+        if (!MainCommand.isLobbySet()) {
+            s.sendMessage("§c▪ §7You have to set the lobby location first!");
+            return true;
         }
         for (Language l : Language.getLanguages()){
             l.reload();
