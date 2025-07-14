@@ -20,7 +20,6 @@
 
 package com.andrei1058.bedwars.arena.spectator;
 
-import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.events.player.PlayerKillEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerLeaveArenaEvent;
@@ -175,7 +174,7 @@ public class SpectatorListeners implements Listener {
             p.getInventory().setHeldItemSlot(5);
             p.setGameMode(GameMode.SPECTATOR);
             p.setSpectatorTarget(target);
-            nms.sendTitle(p, event.getTitle().apply(p).replace("%bw_playername%", p.getName()).replace("%bw_player%", target.getDisplayName()), event.getSubTitle().apply(p).replace("%bw_player%", target.getDisplayName()), event.getFadeIn(), event.getStay(), event.getFadeOut());
+            nms.sendTitle(p, event.getTitle().apply(p).replace("{playername}", p.getName()).replace("{player}", target.getDisplayName()), event.getSubTitle().apply(p).replace("{player}", target.getDisplayName()), event.getFadeIn(), event.getStay(), event.getFadeOut());
         }
     }
 
