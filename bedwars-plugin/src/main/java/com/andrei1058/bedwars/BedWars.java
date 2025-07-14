@@ -75,7 +75,6 @@ import com.andrei1058.bedwars.support.party.NoParty;
 import com.andrei1058.bedwars.support.party.PAF;
 import com.andrei1058.bedwars.support.party.PAFBungeecordRedisApi;
 import com.andrei1058.bedwars.support.party.PartiesAdapter;
-import com.andrei1058.bedwars.support.preloadedparty.PrePartyListener;
 import com.andrei1058.bedwars.support.vault.*;
 import com.andrei1058.bedwars.support.vipfeatures.VipFeatures;
 import com.andrei1058.bedwars.support.vipfeatures.VipListeners;
@@ -108,7 +107,7 @@ public class BedWars extends JavaPlugin {
 
     private static ServerType serverType = ServerType.MULTIARENA;
     public static boolean debug = true, autoscale = false;
-    public static String mainCmd = "bw", link = "https://www.spigotmc.org/resources/50942/";
+    public static String mainCmd = "bw", link = "WWW.Aquix.egg.pl.support";
     public static ConfigManager signs, generators;
     public static MainConfig config;
     public static ShopManager shop;
@@ -289,7 +288,7 @@ public class BedWars extends JavaPlugin {
                 //registerEvents(new ArenaListeners());
                 ArenaSocket.lobbies.addAll(config.getList(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_LOBBY_SERVERS));
                 new SendTask();
-                registerEvents(new AutoscaleListener(), new PrePartyListener(), new JoinListenerBungee());
+//                registerEvents(new AutoscaleListener(), new PrePartyListener(), new JoinListenerBungee());
                 Bukkit.getScheduler().runTaskTimerAsynchronously(this, new LoadedUsersCleaner(), 60L, 60L);
             } else {
                 registerEvents(new ServerPingListener(), new JoinListenerBungeeLegacy());
