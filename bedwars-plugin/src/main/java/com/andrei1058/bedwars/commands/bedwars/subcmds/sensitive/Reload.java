@@ -1,5 +1,3 @@
-
-
 package com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive;
 
 import com.andrei1058.bedwars.api.BedWars;
