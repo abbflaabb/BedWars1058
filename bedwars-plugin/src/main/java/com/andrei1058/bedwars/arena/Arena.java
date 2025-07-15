@@ -28,9 +28,11 @@ import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.region.Region;
 import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.sidebar.ISidebar;
+import com.andrei1058.bedwars.api.tasks.AnnouncementTask;
 import com.andrei1058.bedwars.api.tasks.PlayingTask;
 import com.andrei1058.bedwars.api.tasks.RestartingTask;
 import com.andrei1058.bedwars.api.tasks.StartingTask;
+import com.andrei1058.bedwars.arena.feature.AnnouncementFeature;
 import com.andrei1058.bedwars.arena.stats.GameStatsManager;
 import com.andrei1058.bedwars.arena.stats.StatisticsOrdered;
 import com.andrei1058.bedwars.arena.tasks.GamePlayingTask;
@@ -110,6 +112,7 @@ public class Arena implements IArena {
     private List<String> nextEvents = new ArrayList<>();
     private List<Region> regionsList = new ArrayList<>();
     private int renderDistance;
+    private AnnouncementTask announcementTask;
 
     private final List<Player> leaving = new ArrayList<>();
 
@@ -619,7 +622,7 @@ public class Arena implements IArena {
             updateSpectatorCollideRule(p, false);
 
             if (!playerBefore) {
-                /* save player inv etc if isn't saved yet*/
+                /* save player inv etc. if isn't saved yet*/
                 if (getServerType() != ServerType.BUNGEE) {
                     new PlayerGoods(p, true);
                     playerLocation.put(p, p.getLocation());
@@ -765,7 +768,7 @@ public class Arena implements IArena {
             }
         }
         Bukkit.getPluginManager().callEvent(new PlayerLeaveArenaEvent(p, this, lastDamager));
-        //players.remove must be under call event in order to check if the player is a spectator or not
+        //players.remove must be under call event to check if the player is a spectator or not
         players.remove(p);
         removeArenaByPlayer(p, this);
 
@@ -1513,6 +1516,9 @@ public class Arena implements IArena {
         if (restartingTask != null) {
             if (bs.isCurrentlyRunning(restartingTask.getTask()) || bs.isQueued(restartingTask.getTask()))
                 restartingTask.cancel();
+        }
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT_ENABLE)) {
+            announcementTask = new AnnouncementFeature(this);
         }
         restartingTask = null;
         if (null != moneyperMinuteTask) {
@@ -2697,5 +2703,9 @@ public class Arena implements IArena {
     @Override
     public GameStatsHolder getStatsHolder() {
         return gameStats;
+    }
+    @Override
+    public AnnouncementTask getAnnouncementTask() {
+        return announcementTask;
     }
 }

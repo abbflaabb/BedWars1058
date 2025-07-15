@@ -137,6 +137,10 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_REJOIN_TIME = "rejoin-time";
     public static final String GENERAL_CONFIGURATION_RE_SPAWN_INVULNERABILITY = "re-spawn-invulnerability";
 
+    public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT = "in-game-announcement";
+    public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT_ENABLE = GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT +".enable";
+
+    public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT_COOLDOW = GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT + ".cooldown";
     public static final String GENERAL_CONFIGURATION_SHOUT_COOLDOWN = "shout-cmd-cooldown";
 
     public static final String GENERAL_CONFIGURATION_NPC_LOC_STORAGE = "join-npc-locations";

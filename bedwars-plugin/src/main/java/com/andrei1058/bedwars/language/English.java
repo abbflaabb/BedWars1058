@@ -113,6 +113,12 @@ public class English extends Language {
         yml.addDefault(Messages.RESOURCE_CHEST_BLOCKED_ITEM, "&cYou cannot deposit &f{item} &cin the resource chest!");
         yml.addDefault(Messages.RESOURCE_CHEST_FULL, "&cResource chest is full!");
         yml.addDefault(Messages.RESOURCE_CHEST_DEPOSITED, "&aYou deposited &f{amount} {item} &ain the {chest}!");
+        yml.addDefault(Messages.ARENA_IN_GAME_ANNOUNCEMENT, Arrays.asList(
+                "&c&l[BEDWARS] &7If you get disconnected, use &e/rejoin &7to return to your game safely!",
+                "&c&l[IMPORTANT] &7Cross-teaming is strictly prohibited! Please report any violations using &e/report &7to keep the game fair.",
+                "&6Tip: &7Protect your bed and work with your team to secure victory!",
+                "&bNeed help? Use &e/help &bfor a list of commands."
+        ));
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");

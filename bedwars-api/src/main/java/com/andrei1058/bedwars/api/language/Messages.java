@@ -43,6 +43,7 @@ public class Messages {
     public static String NEXT_EVENT_TITLE_ANNOUNCE_SUDDEN_DEATH = "next-event-sudden-death-title";
     public static String NEXT_EVENT_SUBTITLE_ANNOUNCE_SUDDEN_DEATH = "next-event-sudden-death-sub-title";
     public static String NEXT_EVENT_CHAT_ANNOUNCE_SUDDEN_DEATH = "next-event-sudden-death-chat";
+    public static String ARENA_IN_GAME_ANNOUNCEMENT = "in-game-announcement";
 
     /**
      * General commands reply

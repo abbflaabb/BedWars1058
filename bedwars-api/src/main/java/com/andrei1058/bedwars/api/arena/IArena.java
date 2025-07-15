@@ -27,6 +27,7 @@ import com.andrei1058.bedwars.api.arena.team.ITeamAssigner;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.region.Region;
+import com.andrei1058.bedwars.api.tasks.AnnouncementTask;
 import com.andrei1058.bedwars.api.tasks.PlayingTask;
 import com.andrei1058.bedwars.api.tasks.RestartingTask;
 import com.andrei1058.bedwars.api.tasks.StartingTask;
@@ -84,6 +85,8 @@ public interface IArena {
      * Get a list of spectators.
      */
     List<Player> getSpectators();
+
+    AnnouncementTask getAnnouncementTask();
 
     /**
      * Get the player's team.
