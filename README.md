@@ -44,6 +44,7 @@ You can find a list of pre-made server setups and a lot of community add-ons [on
 - 2-delateArena
 - 3-reload
 )
+- Add Gms,GMSP,GMC Commands New And Map 
 ###### Language | Per player language system:
 - each player can receive messages, holograms, GUIs etc. in their desired language. /bw lang.
 - you can either remove or add new languages.
