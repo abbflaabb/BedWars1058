@@ -1,34 +1,36 @@
 ![Logo](./.github/assets/logo_open_source.png)
 
 
-As from November 1st 2021 BedWars1058 by Andrei Dascălu becomes open source under GNU GPL 3.0 license. If you are a developer I would really appreciate if you'd come with pull requests instead of making hundreds of forks. Let's make updates available for everyone!
+As from july 1st 2025 BedWars1058 by AquixBedWars becomes open source under GNU GPL 3.0 license. If you are a developer I would really appreciate if you'd come with pull requests instead of making hundreds of forks. Let's make updates available for everyone!
 
-[![Discord](https://discordapp.com/api/guilds/201345265821679617/widget.png?style=shield)](https://discord.gg/XdJfN2X)
-
-[![Crowdin](https://support.crowdin.com/assets/badges/localization-at-white-rounded-bordered@1x.svg)](https://crowdin.com/project/bedwars1058)
+[![Discord](https://discordapp.com/api/guilds/201345265821679617/widget.png?style=shield)](https://discord.gg/n2vfN2Ta2g)
 
 # Description
 BedWars is a mini-game where you have to defend your bed and destroy the others.  
 Once your bed is destroyed, you cannot respawn.
 
 # System requirements
-This software runs on [Spigot](https://www.spigotmc.org/) and NMS.
-Spigot forks without compiled NMS code are not supported.
-Officially supported servers are [spigot](https://www.spigotmc.org/) and [paper](https://papermc.io/).
+This software runs on [pandaspigot](https://jarlist.tect.host/bukkit/pandaspigot-plugins/pandaspigot-1.8.8) and NMS.
+pandaspigot forks without compiled NMS code are not supported.
+Officially supported servers are [pandaspigot](https://jarlist.tect.host/bukkit/pandaspigot-plugins/pandaspigot-1.8.8) and [paper](https://papermc.io/).
 It is required to use **Java 11** or newer.
 
 The internal world restore system is based on zipping and unzipping maps which can become
 heavy if you are still making use of HDDs and you do not have a decent CPU, for a better
 and faster restore system we recommend using one of the following solutions:
 - [SlimeWorldManager](https://www.spigotmc.org/resources/slimeworldmanager.69974/) plug-in (v2.2.1 **only**)
-- [AdvancedWorldManager](https://www.spigotmc.org/resources/advanced-slimeworldmanager.87209/) plug-in (v2.8.0 **only**)
-- [AdvancedSlimePaper](https://github.com/InfernalSuite/AdvancedSlimePaper) server jar (**1.20 or newer**)
 
 BedWars1058 will hook into it and do everything for you, no additional configuration is needed.
 
 # Pre-made setups and community add-ons
 
 You can find a list of pre-made server setups and a lot of community add-ons [on BedWars1058 Wiki](https://wiki.andrei1058.dev/docs/BedWars1058/addons).
+
+# Fix bugs and issues
+- Fix Player Fell into void Add Spectator
+- Fix BuildLimit Add Message
+- Fix ShopLimit Add Message
+- Fix DeathAnmation
 
 # Main features
 
@@ -37,13 +39,17 @@ You can find a list of pre-made server setups and a lot of community add-ons [on
 - **MULTIARENA**: will require an entire server instance for hosting the mini-game. It will protect the lobby world and games can be joined via commands, NPCs, signs and GUIs.
 - **BUNGEE-LEGACY**: the old classic bungee mode where a game means an entire server instance. You'll be added to the game when joining the server. Arena status will be displayed as MOTD.
 - **BUNGEE**: a brand new scalable bungee mode. It can host multiple arenas on the same server instance, clone and start new arenas when needed so other players can join. The server can be automatically restarted after a certain amount of games played. This will require installing [BedWarsProxy](https://www.spigotmc.org/resources/bedwarsproxy.66642/) on your lobby servers so players can join. And of course, you can run as many servers as you want in bungee mode.
-
+- Add ConsoleCommands (
+- 1-arenaList
+- 2-delateArena
+- 3-reload
+)
 ###### Language | Per player language system:
 - each player can receive messages, holograms, GUIs etc. in their desired language. /bw lang.
 - you can either remove or add new languages.
 - team names, group names, shop contents and a lot more can be translated in your languages.
 - custom titles and subtitles for [starting countdown](https://gitlab.com/andrei1058/BedWars1058/-/wikis/language-configuration#custom-title-sub-title-for-arena-countdown).
-
+- custom messages for Deposit, Deposit All, Deposit All in Team Inventory, Deposit All in Personal Inventory, Deposit All in Ender Chest, Deposit All in Team Chest, Deposit All in Personal Chest and Deposit All in Ender Chest messages.
 ###### Lobby removal | Optional:
 The waiting-lobby inside the map can be removed once the game starts.
 
@@ -51,7 +57,6 @@ The waiting-lobby inside the map can be removed once the game starts.
 - you can group arenas by type (4v4, 50v50). You can name them however you want.
 - groups can have custom scoreboard layouts, team upgrades, start items and custom generator settings.
 - you can join maps by group: /bw join Solo, /bw gui Solo.
-
 ###### Shop | Customization:
 - you may configure quick-buy default items.
 - you may add or remove categories.
