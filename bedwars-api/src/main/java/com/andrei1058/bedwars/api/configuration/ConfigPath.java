@@ -89,6 +89,9 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH = "lobby-items";
     public static final String GENERAL_CONFIGURATION_EXPERIMENTAL_TEAM_ASSIGNER = "use-experimental-team-assigner";
 
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX = "click-in-chest-to-deposit-feature.";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "enable";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED = GENERAL_CONFIGURATION_RESOURCE_CHEST_PREFIX + "blocked-items";
     // Replace %path% with name
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_MATERIAL = GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH + ".%path%.material";
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_DATA = GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH + ".%path%.data";

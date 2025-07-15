@@ -120,6 +120,11 @@ public class Messages {
     public static String COMMAND_FORCESTART_NO_PERM = "cmd-start-no-perm";
     public static String COMMAND_COOLDOWN = "cmd-cooldown";
 
+
+    public static String RESOURCE_CHEST_BLOCKED_ITEM = "resource-chest-blocked-item";
+    public static String RESOURCE_CHEST_FULL = "resource-chest-full";
+    public static String RESOURCE_CHEST_DEPOSITED = "resource-chest-deposited";
+
     /**
      * Arena join/ leave related
      */

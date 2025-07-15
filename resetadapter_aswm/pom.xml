@@ -26,6 +26,10 @@
             <id>legacy-aswm</id>
             <url>https://repo.rapture.pw/repository/maven-snapshots/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>

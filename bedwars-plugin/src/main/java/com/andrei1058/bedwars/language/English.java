@@ -109,6 +109,10 @@ public class English extends Language {
         yml.addDefault(Messages.COMMAND_GMS_NO_PERMISSION, "{prefix}&cYou do not have permission to use this command.");
         yml.addDefault(Messages.COMMAND_GMS_ENABLED, "{prefix}&aGame mode set to Survival.");
         yml.addDefault(Messages.COMMAND_GMS_DISABLED, "{prefix}&cYou cannot use this command while in a game.");
+        // In English.java or similar language class
+        yml.addDefault(Messages.RESOURCE_CHEST_BLOCKED_ITEM, "&cYou cannot deposit &f{item} &cin the resource chest!");
+        yml.addDefault(Messages.RESOURCE_CHEST_FULL, "&cResource chest is full!");
+        yml.addDefault(Messages.RESOURCE_CHEST_DEPOSITED, "&aYou deposited &f{amount} {item} &ain the {chest}!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");

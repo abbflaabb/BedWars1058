@@ -6,6 +6,7 @@ import com.andrei1058.bedwars.api.configuration.ConfigPath;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.levels.Level;
 import com.andrei1058.bedwars.api.party.Party;
+import com.andrei1058.bedwars.arena.feature.ResourceChestFeature;
 import com.andrei1058.bedwars.api.server.RestoreAdapter;
 import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.server.VersionSupport;
@@ -497,8 +498,10 @@ public class BedWars extends JavaPlugin {
         }
 
         // Halloween Special
-        HalloweenSpecial.init();
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN)) HalloweenSpecial.init();
 
+        // Resource Chest
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED)) ResourceChestFeature.init();
         // TNT Spoil Feature
         SpoilPlayerTNTFeature.init();
 
