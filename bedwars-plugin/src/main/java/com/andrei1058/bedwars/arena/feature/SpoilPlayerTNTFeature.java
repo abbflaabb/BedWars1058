@@ -1,6 +1,4 @@
-
 package com.andrei1058.bedwars.arena.feature;
-
 
 import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.arena.IArena;
@@ -102,7 +100,7 @@ public class SpoilPlayerTNTFeature {
         public void inventorySwitch(InventoryCloseEvent event) {
             Player player = (Player) event.getPlayer();
             IArena arena = Arena.getArenaByPlayer(player);
-            if (arena == null || !arena.isPlayer(player) || arena.isSpectator(player)) return;
+            if (arena == null || !arena.isPlayer(player) || arena.isSpectator(player) || player.isDead()) return;
 
             if (instance.playersWithTnt.contains(player)) {
                 if (player.getInventory().contains(Material.TNT)) return;

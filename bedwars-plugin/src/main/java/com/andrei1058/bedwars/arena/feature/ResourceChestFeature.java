@@ -1,9 +1,11 @@
 package com.andrei1058.bedwars.arena.feature;
 
 import com.andrei1058.bedwars.BedWars;
+import com.andrei1058.bedwars.api.arena.GameState;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.arena.team.ITeam;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
+import com.andrei1058.bedwars.api.events.gameplay.GameStateChangeEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerItemDepositEvent;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
@@ -13,7 +15,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,15 +26,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ResourceChestFeature implements Listener {
 
     private static ResourceChestFeature instance;
     private final Set<Material> blocked;
+    private final Map<IArena, List<Hologram>> holoMap = new HashMap<>();
 
     private ResourceChestFeature() {
         this.blocked = BedWars.config.getYml()
@@ -46,6 +49,29 @@ public class ResourceChestFeature implements Listener {
         if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED)
                 && instance == null) {
             instance = new ResourceChestFeature();
+        }
+    }
+
+    @EventHandler
+    public void onArenaStateChange(GameStateChangeEvent e) {
+        IArena arena = e.getArena();
+
+        if (e.getNewState() == GameState.restarting) {
+            if (holoMap.containsKey(arena)) {
+                holoMap.get(arena).forEach(Hologram::remove);
+            }
+            holoMap.remove(arena);
+        } else if (e.getNewState() == GameState.playing) {
+            holoMap.put(arena, new ArrayList<>());
+
+            // Check if holograms are enabled in config
+            if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_ENABLED)) {
+                // Force load all chunks in the arena first
+                loadArenaChunks(arena);
+
+                // Small delay to ensure chunks are fully loaded
+                Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> createHologramsForArena(arena), 20L); // 1 second delay
+            }
         }
     }
 
@@ -136,5 +162,38 @@ public class ResourceChestFeature implements Listener {
 
     private void callEvent(Player player, IArena arena, ItemStack item, Inventory inventory, boolean isEnderChest) {
         Bukkit.getPluginManager().callEvent(new PlayerItemDepositEvent(player, arena, item, inventory, isEnderChest));
+    }
+
+    private void loadArenaChunks(IArena arena) {
+        // Force load chunks for each team's island
+        for (ITeam team : arena.getTeams()) {
+            if (team.getSpawn() != null) {
+                team.getSpawn().getChunk().load(true);
+            }
+            if (team.getShop() != null) {
+                team.getShop().getChunk().load(true);
+            }
+            if (team.getTeamUpgrades() != null) {
+                team.getTeamUpgrades().getChunk().load(true);
+            }
+        }
+
+        // Also load spawn area chunks
+        if (arena.getSpectatorLocation() != null) {
+            arena.getSpectatorLocation().getChunk().load(true);
+        }
+    }
+
+    private void createHologramsForArena(IArena arena) {
+        // Scan all loaded chunks again after forcing chunk loading
+        for (Chunk chunk : arena.getWorld().getLoadedChunks()) {
+            for (BlockState state : chunk.getTileEntities()) {
+                if (state.getType() == Material.CHEST || state.getType() == Material.ENDER_CHEST) {
+                    Hologram holo = new Hologram(state.getLocation());
+                    holo.createResourceChestHologram(state.getLocation());
+                    holoMap.get(arena).add(holo);
+                }
+            }
+        }
     }
 }

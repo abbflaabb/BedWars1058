@@ -112,12 +112,6 @@ public class SetupSession implements ISetupSession {
 
     private static void openGUI(Player player) {
         Inventory inv = Bukkit.createInventory(null, 9, getInvName());
-        ItemStack assisted = new ItemStack(Material.GLOWSTONE_DUST);
-        ItemMeta am = assisted.getItemMeta();
-        am.setDisplayName("§e§lASSISTED SETUP");
-        am.setLore(Arrays.asList("", "§aEasy and quick setup!", "§7For beginners and lazy staff :D", "", "§3Reduced options."));
-        assisted.setItemMeta(am);
-        inv.setItem(getAssistedSlot(), assisted);
 
         ItemStack advanced = new ItemStack(Material.REDSTONE);
         ItemMeta amm = advanced.getItemMeta();
@@ -204,14 +198,14 @@ public class SetupSession implements ISetupSession {
         for (int x = 0; x < 10; x++) {
             getPlayer().sendMessage(" ");
         }
-        player.sendMessage(ChatColor.GREEN + "You were teleported to the " + ChatColor.GOLD + getWorldName() + ChatColor.GREEN + "'s spawn.");
+        player.sendMessage(ChatColor.GREEN + "You have been teleported to " + ChatColor.GOLD + getWorldName() + ChatColor.GREEN + "'s spawn location.");
         if (getSetupType() == SetupType.ASSISTED && getConfig().getYml().get("waiting.Loc") == null) {
             player.sendMessage("");
-            player.sendMessage(ChatColor.GREEN + "Hello " + player.getDisplayName() + "!");
-            player.sendMessage(ChatColor.WHITE + "Please set the waiting spawn.");
-            player.sendMessage(ChatColor.WHITE + "It is the place where players will wait the game to start.");
-            player.spigot().sendMessage(Misc.msgHoverClick(ChatColor.BLUE + "     ▪     " + ChatColor.GOLD + "CLICK HERE TO SET THE WAITING LOBBY    " + ChatColor.BLUE + " ▪", ChatColor.LIGHT_PURPLE + "Click to set the waiting spawn.", "/" + BedWars.mainCmd + " setWaitingSpawn", ClickEvent.Action.RUN_COMMAND));
-            player.spigot().sendMessage(MainCommand.createTC(ChatColor.YELLOW + "Or type: " + ChatColor.GRAY + "/" + BedWars.mainCmd + " to see the command list.", "/" + BedWars.mainCmd + "", ChatColor.WHITE + "Show commands list."));
+            player.sendMessage(ChatColor.GREEN + "Welcome, " + player.getDisplayName() + "!");
+            player.sendMessage(ChatColor.WHITE + "Next step: Configure the waiting lobby spawn point.");
+            player.sendMessage(ChatColor.GRAY + "This is where players will wait for the game to begin.");
+            player.spigot().sendMessage(Misc.msgHoverClick(ChatColor.BLUE + "     ▪     " + ChatColor.GOLD + "CLICK HERE TO SET WAITING LOBBY     " + ChatColor.BLUE + "▪", ChatColor.LIGHT_PURPLE + "Click to set the waiting spawn location.", "/" + BedWars.mainCmd + " setWaitingSpawn", ClickEvent.Action.RUN_COMMAND));
+            player.spigot().sendMessage(MainCommand.createTC(ChatColor.YELLOW + "Alternative: " + ChatColor.GRAY + "/" + BedWars.mainCmd + " to view all available commands.", "/" + BedWars.mainCmd + "", ChatColor.WHITE + "Show complete command list."));
         } else {
             Bukkit.dispatchCommand(player, BedWars.mainCmd + " cmds");
         }

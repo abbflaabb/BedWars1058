@@ -140,6 +140,13 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT = "in-game-announcement";
     public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT_ENABLE = GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT +".enable";
 
+
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_ENABLED = "resource-chest.hologram.enabled";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_TITLE = "resource-chest.hologram.title";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_SUBTITLE = "resource-chest.hologram.subtitle";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_Y_OFFSET = "resource-chest.hologram.y-offset";
+    public static final String GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_SPACING = "resource-chest.hologram.spacing";
+
     public static final String GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT_COOLDOW = GENERAL_CONFIGURATION_IN_GAME_ANNOUNCEMENT + ".cooldown";
     public static final String GENERAL_CONFIGURATION_SHOUT_COOLDOWN = "shout-cmd-cooldown";
 
