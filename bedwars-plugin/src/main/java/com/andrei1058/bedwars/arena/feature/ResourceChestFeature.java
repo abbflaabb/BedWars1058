@@ -10,14 +10,10 @@ import com.andrei1058.bedwars.api.events.player.PlayerItemDepositEvent;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.arena.Arena;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -70,7 +66,9 @@ public class ResourceChestFeature implements Listener {
                 loadArenaChunks(arena);
 
                 // Small delay to ensure chunks are fully loaded
-                Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> createHologramsForArena(arena), 20L); // 1 second delay
+                Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> {
+                    createHologramsForArena(arena);
+                }, 20L); // 1 second delay
             }
         }
     }
@@ -86,6 +84,11 @@ public class ResourceChestFeature implements Listener {
         boolean isChest = block.getType() == Material.CHEST;
         boolean isEnderChest = block.getType() == Material.ENDER_CHEST;
         if (!isChest && !isEnderChest) return;
+
+        // Create hologram for this chest if it doesn't exist and holograms are enabled
+        if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_ENABLED)) {
+            ensureHologramExists(arena, block.getLocation());
+        }
 
         ITeam team = arena.getTeam(e.getPlayer());
         if (team == null) return;
@@ -195,5 +198,23 @@ public class ResourceChestFeature implements Listener {
                 }
             }
         }
+    }
+
+    private void ensureHologramExists(IArena arena, Location chestLocation) {
+        List<Hologram> holograms = holoMap.get(arena);
+        if (holograms == null) return;
+
+        // Check if hologram already exists for this location
+        for (Hologram holo : holograms) {
+            if (holo.getLines().size() > 0 &&
+                    holo.getLines().get(0).getLocation().distance(chestLocation) < 2.0) {
+                return; // Hologram already exists
+            }
+        }
+
+        // Create new hologram for this chest
+        Hologram holo = new Hologram(chestLocation);
+        holo.createResourceChestHologram(chestLocation);
+        holograms.add(holo);
     }
 }
