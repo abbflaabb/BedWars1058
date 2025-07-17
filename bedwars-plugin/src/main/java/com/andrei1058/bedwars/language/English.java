@@ -119,6 +119,8 @@ public class English extends Language {
                 "&6Tip: &7Protect your bed and work with your team to secure victory!",
                 "&bNeed help? Use &e/help &bfor a list of commands."
         ));
+        yml.addDefault(Messages.TNT_COUNTDOWN_MESSAGE, "{prefix}&c&l[!] &6TNT Detonation in &e&l{time} &6seconds! &c&l[!]");
+        yml.addDefault(Messages.TNT_EXPLODED_MESSAGE, "{prefix}&c&l[!] &6TNT has exploded! &c&l[!]");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");

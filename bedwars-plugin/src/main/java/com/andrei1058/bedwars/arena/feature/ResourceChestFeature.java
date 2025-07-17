@@ -30,6 +30,7 @@ public class ResourceChestFeature implements Listener {
     private static ResourceChestFeature instance;
     private final Set<Material> blocked;
     private final Map<IArena, List<Hologram>> holoMap = new HashMap<>();
+    private final Map<IArena, Map<Location, ITeam>> chestOwnership = new HashMap<>();
 
     private ResourceChestFeature() {
         this.blocked = BedWars.config.getYml()
@@ -57,8 +58,10 @@ public class ResourceChestFeature implements Listener {
                 holoMap.get(arena).forEach(Hologram::remove);
             }
             holoMap.remove(arena);
+            chestOwnership.remove(arena);
         } else if (e.getNewState() == GameState.playing) {
             holoMap.put(arena, new ArrayList<>());
+            chestOwnership.put(arena, new HashMap<>());
 
             // Check if holograms are enabled in config
             if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_ENABLED)) {
@@ -85,15 +88,24 @@ public class ResourceChestFeature implements Listener {
         boolean isEnderChest = block.getType() == Material.ENDER_CHEST;
         if (!isChest && !isEnderChest) return;
 
+        Player player = e.getPlayer();
+        ITeam playerTeam = arena.getTeam(player);
+        if (playerTeam == null) return;
+
+        // Check team ownership for regular chests
+        if (isChest && !canPlayerAccessChest(arena, player, block.getLocation())) {
+            String raw = Language.getMsg(player, Messages.RESOURCE_CHEST_BLOCKED_ITEM)
+                    .replace("{item}", "this team chest");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', raw));
+            e.setCancelled(true);
+            return;
+        }
+
         // Create hologram for this chest if it doesn't exist and holograms are enabled
         if (BedWars.config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_HOLOGRAM_ENABLED)) {
             ensureHologramExists(arena, block.getLocation());
         }
 
-        ITeam team = arena.getTeam(e.getPlayer());
-        if (team == null) return;
-
-        Player player = e.getPlayer();
         ItemStack hand = e.getItem();
         if (hand == null || hand.getType() == Material.AIR) return;
 
@@ -119,8 +131,13 @@ public class ResourceChestFeature implements Listener {
         int inserted = safeDeposit(player, hand, inventory);
         if (inserted <= 0) return;
 
+        // Set ownership for the chest if it's a regular chest and first time being used
+        if (isChest) {
+            setChestOwnership(arena, block.getLocation(), playerTeam);
+        }
+
         if (hand.getType().name().contains("SWORD")) {
-            team.defaultSword(player, true);
+            playerTeam.defaultSword(player, true);
         }
 
         String chestType = isEnderChest ? "ender chest" : "team chest";
@@ -132,6 +149,24 @@ public class ResourceChestFeature implements Listener {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', raw));
         player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1.0f, 1.0f);
         callEvent(player, arena, hand.clone(), inventory, isEnderChest);
+    }
+
+    private boolean canPlayerAccessChest(IArena arena, Player player, Location chestLocation) {
+        Map<Location, ITeam> arenaChests = chestOwnership.get(arena);
+        if (arenaChests == null) return true;
+
+        ITeam chestOwner = arenaChests.get(chestLocation);
+        if (chestOwner == null) return true; // Chest has no owner yet
+
+        ITeam playerTeam = arena.getTeam(player);
+        return playerTeam != null && playerTeam.equals(chestOwner);
+    }
+
+    private void setChestOwnership(IArena arena, Location chestLocation, ITeam team) {
+        Map<Location, ITeam> arenaChests = chestOwnership.get(arena);
+        if (arenaChests != null && !arenaChests.containsKey(chestLocation)) {
+            arenaChests.put(chestLocation, team);
+        }
     }
 
     private int safeDeposit(Player player, ItemStack hand, Inventory inventory) {

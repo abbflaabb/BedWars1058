@@ -25,7 +25,7 @@ public class PartyCommand extends BukkitCommand {
     }
 
     //owner, target
-    private static HashMap<UUID, UUID> partySessionRequest = new HashMap<>();
+    private static final HashMap<UUID, UUID> partySessionRequest = new HashMap<>();
 
     @Override
     public boolean execute(CommandSender s, String c, String[] args) {
