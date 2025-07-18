@@ -24,6 +24,7 @@ import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.arena.shop.IContentTier;
 import com.andrei1058.bedwars.api.command.ParentCommand;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
+import com.andrei1058.bedwars.api.hologram.IHologramManager;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.levels.Level;
 import com.andrei1058.bedwars.api.party.Party;
@@ -48,6 +49,8 @@ public interface BedWars {
      * Get stats utils.
      */
     IStats getStatsUtil();
+
+    IHologramManager getHologramManager();
 
     interface IStats {
         /**

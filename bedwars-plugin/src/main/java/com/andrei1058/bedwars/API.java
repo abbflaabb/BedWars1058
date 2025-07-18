@@ -6,6 +6,7 @@ import com.andrei1058.bedwars.api.arena.shop.IContentTier;
 import com.andrei1058.bedwars.api.command.ParentCommand;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
 import com.andrei1058.bedwars.api.events.player.PlayerAfkEvent;
+import com.andrei1058.bedwars.api.hologram.IHologramManager;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.party.Party;
 import com.andrei1058.bedwars.api.server.ISetupSession;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 import java.util.logging.Level;
+
+import static com.andrei1058.bedwars.BedWars.hologramManager;
 
 public class API implements com.andrei1058.bedwars.api.BedWars {
 
@@ -105,7 +108,6 @@ public class API implements com.andrei1058.bedwars.api.BedWars {
         public int getGamesBeforeRestart() {
             return Arena.getGamesBeforeRestart();
         }
-
         @Override
         public IArena getArenaByPlayer(Player player) {
             return Arena.getArenaByPlayer(player);
@@ -239,6 +241,11 @@ public class API implements com.andrei1058.bedwars.api.BedWars {
     @Override
     public IStats getStatsUtil() {
         return StatsAPI.getInstance();
+    }
+
+    @Override
+    public IHologramManager getHologramManager() {
+        return hologramManager;
     }
 
     @Override

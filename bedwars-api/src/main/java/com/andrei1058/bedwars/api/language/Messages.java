@@ -137,8 +137,6 @@ public class Messages {
     public static String ARENA_JOIN_DENIED_NO_PROXY = "arena-join-denied-no-bwp";
     public static String ARENA_SPECTATE_DENIED_SELECTOR = "arena-spectate-denied-selector";
     public static String ARENA_LEAVE_PARTY_DISBANDED = "arena-leave-party-disbanded";
-    public static String TNT_COUNTDOWN_MESSAGE = "arena-tnt-countdown";
-    public static String TNT_EXPLODED_MESSAGE = "arena-tnt-exploded";
     /**
      * Arena status/ status change related
      */

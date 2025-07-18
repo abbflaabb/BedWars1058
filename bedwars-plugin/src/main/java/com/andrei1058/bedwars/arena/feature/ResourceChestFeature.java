@@ -7,6 +7,7 @@ import com.andrei1058.bedwars.api.arena.team.ITeam;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
 import com.andrei1058.bedwars.api.events.gameplay.GameStateChangeEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerItemDepositEvent;
+import com.andrei1058.bedwars.api.hologram.IHologram;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.arena.Arena;
@@ -29,7 +30,7 @@ public class ResourceChestFeature implements Listener {
 
     private static ResourceChestFeature instance;
     private final Set<Material> blocked;
-    private final Map<IArena, List<Hologram>> holoMap = new HashMap<>();
+    private final Map<IArena, List<IHologram>> holoMap = new HashMap<>();
     private final Map<IArena, Map<Location, ITeam>> chestOwnership = new HashMap<>();
 
     private ResourceChestFeature() {
@@ -55,7 +56,7 @@ public class ResourceChestFeature implements Listener {
 
         if (e.getNewState() == GameState.restarting) {
             if (holoMap.containsKey(arena)) {
-                holoMap.get(arena).forEach(Hologram::remove);
+                holoMap.get(arena).forEach(IHologram::remove);
             }
             holoMap.remove(arena);
             chestOwnership.remove(arena);
@@ -227,7 +228,8 @@ public class ResourceChestFeature implements Listener {
         for (Chunk chunk : arena.getWorld().getLoadedChunks()) {
             for (BlockState state : chunk.getTileEntities()) {
                 if (state.getType() == Material.CHEST || state.getType() == Material.ENDER_CHEST) {
-                    Hologram holo = new Hologram(state.getLocation());
+                    // Use the API to create hologram
+                    IHologram holo = BedWars.getAPI().getHologramManager().createHologram(state.getLocation());
                     holo.createResourceChestHologram(state.getLocation());
                     holoMap.get(arena).add(holo);
                 }
@@ -236,20 +238,76 @@ public class ResourceChestFeature implements Listener {
     }
 
     private void ensureHologramExists(IArena arena, Location chestLocation) {
-        List<Hologram> holograms = holoMap.get(arena);
+        List<IHologram> holograms = holoMap.get(arena);
         if (holograms == null) return;
 
         // Check if hologram already exists for this location
-        for (Hologram holo : holograms) {
-            if (holo.getLines().size() > 0 &&
-                    holo.getLines().get(0).getLocation().distance(chestLocation) < 2.0) {
+        for (IHologram holo : holograms) {
+            if (!holo.isRemoved() && holo.getLocation().distance(chestLocation) < 2.0) {
                 return; // Hologram already exists
             }
         }
 
-        // Create new hologram for this chest
-        Hologram holo = new Hologram(chestLocation);
+        // Create new hologram for this chest using the API
+        IHologram holo = BedWars.getAPI().getHologramManager().createHologram(chestLocation);
         holo.createResourceChestHologram(chestLocation);
         holograms.add(holo);
+    }
+
+    // Additional utility methods for API integration
+
+    /**
+     * Get all holograms for a specific arena
+     * @param arena The arena to get holograms for
+     * @return List of holograms in the arena
+     */
+    public List<IHologram> getArenaHolograms(IArena arena) {
+        return holoMap.getOrDefault(arena, new ArrayList<>());
+    }
+
+    /**
+     * Remove all holograms for a specific arena
+     * @param arena The arena to remove holograms from
+     */
+    public void removeArenaHolograms(IArena arena) {
+        List<IHologram> holograms = holoMap.get(arena);
+        if (holograms != null) {
+            holograms.forEach(IHologram::remove);
+            holoMap.remove(arena);
+        }
+    }
+
+    /**
+     * Get holograms near a specific location
+     * @param location The center location
+     * @param radius The search radius
+     * @return List of holograms within the radius
+     */
+    public List<IHologram> getHologramsNearLocation(Location location, double radius) {
+        return BedWars.getAPI().getHologramManager().getHologramsInRadius(location, radius);
+    }
+
+    /**
+     * Update hologram text for a specific chest
+     * @param chestLocation The chest location
+     * @param titleText New title text
+     * @param subtitleText New subtitle text
+     */
+    public void updateChestHologram(Location chestLocation, String titleText, String subtitleText) {
+        List<IHologram> nearby = getHologramsNearLocation(chestLocation, 2.0);
+        for (IHologram holo : nearby) {
+            if (holo.getLines().size() >= 2) {
+                holo.updateLine(0, titleText);
+                holo.updateLine(1, subtitleText);
+            }
+        }
+    }
+
+    /**
+     * Get the singleton instance
+     * @return The ResourceChestFeature instance
+     */
+    public static ResourceChestFeature getInstance() {
+        return instance;
     }
 }

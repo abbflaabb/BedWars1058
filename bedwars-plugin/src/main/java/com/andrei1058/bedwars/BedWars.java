@@ -3,9 +3,11 @@ package com.andrei1058.bedwars;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
+import com.andrei1058.bedwars.api.hologram.IHologramManager;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.levels.Level;
 import com.andrei1058.bedwars.api.party.Party;
+import com.andrei1058.bedwars.arena.Hologram.HologramManager;
 import com.andrei1058.bedwars.arena.feature.ResourceChestFeature;
 import com.andrei1058.bedwars.api.server.RestoreAdapter;
 import com.andrei1058.bedwars.api.server.ServerType;
@@ -96,6 +98,7 @@ public class BedWars extends JavaPlugin {
     public static StatsManager statsManager;
     public static BedWars plugin;
     public static VersionSupport nms;
+    public static HologramManager hologramManager;
 
     public static boolean isPaper = false;
 
@@ -196,6 +199,7 @@ public class BedWars extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+        hologramManager = new HologramManager();
 
         nms.registerVersionListeners();
 
@@ -753,6 +757,10 @@ public class BedWars extends JavaPlugin {
         });
     }
 
+
+    public static IHologramManager getHologramManager() {
+        return hologramManager;
+    }
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return new VoidChunkGenerator();
