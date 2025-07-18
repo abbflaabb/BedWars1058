@@ -86,6 +86,13 @@ public class ConfigPath {
     public static final String GENERAL_CONFIGURATION_ALLOW_FIRE_EXTINGUISH = "allow-fire-extinguish";
     public static final String GENERAL_CONFIGURATION_ENABLE_HALLOWEEN = "enable-halloween-feature";
 
+
+    public static final String FLY_COMMAND_COOLDOWN = "fly-command.cooldown";
+    public static final String FLY_COMMAND_ALLOW_IN_GAME = "fly-command.allow-in-game";
+    public static final String FLY_COMMAND_MAX_DURATION = "fly-command.max-duration";
+    public static final String FLY_COMMAND_ENABLE_SOUNDS = "fly-command.enable-sounds";
+
+
     public static final String GENERAL_CONFIGURATION_LOBBY_ITEMS_PATH = "lobby-items";
     public static final String GENERAL_CONFIGURATION_EXPERIMENTAL_TEAM_ASSIGNER = "use-experimental-team-assigner";
 

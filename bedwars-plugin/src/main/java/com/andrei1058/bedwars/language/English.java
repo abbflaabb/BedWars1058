@@ -54,7 +54,8 @@ public class English extends Language {
             yml.set("player-die-knocked-final", null);
         }
 
-        yml.addDefault(Messages.COMMAND_MAIN, Arrays.asList("", "&2▪ &7/" + mainCmd + " stats", "&2▪ &7/" + mainCmd + " join &o<arena/group>", "&2▪ &7/" + mainCmd + " leave", "&2▪ &7/" + mainCmd + " lang", "&2▪ &7/" + mainCmd + " gui", "&2▪ &7/" + mainCmd + " start &3(vip)"));
+        yml.addDefault(Messages.COMMAND_MAIN, Arrays.asList("", "&2▪ &7/" + mainCmd + " stats", "&2▪ &7/" + mainCmd + " join &o<arena/group>", "&2▪ &7/" + mainCmd + " leave", "&2▪ &7/" + mainCmd + " lang", "&2▪ &7/" + mainCmd + " gui", "&2▪ &7/" + mainCmd + " start &3(premium)",
+                "&2▪ &7/" + mainCmd + " tp &o<player>", "&2▪ &7/" + mainCmd + " fly &3(premium)"));
         yml.addDefault(Messages.COMMAND_LANG_LIST_HEADER, "{prefix} &2Available languages:");
         yml.addDefault(Messages.COMMAND_LANG_LIST_FORMAT, "&a▪  &7{iso} - &f{name}");
         yml.addDefault(Messages.COMMAND_LANG_USAGE, "{prefix}&7Usage: /lang &f&o<iso>");
@@ -119,6 +120,58 @@ public class English extends Language {
                 "&6Tip: &7Protect your bed and work with your team to secure victory!",
                 "&bNeed help? Use &e/help &bfor a list of commands."
         ));
+
+
+
+        yml.addDefault(Messages.FLY_CONSOLE_ONLY, "&cThis command can only be used by players!");
+        yml.addDefault(Messages.FLY_PLAYER_NOT_FOUND, "&cPlayer not found or not online!");
+        yml.addDefault(Messages.FLY_INVALID_DURATION, "&cInvalid duration! Please enter a number.");
+        yml.addDefault(Messages.FLY_INVALID_SPEED, "&cInvalid speed! Please enter a number between 1-10.");
+        yml.addDefault(Messages.FLY_COOLDOWN, "&cYou must wait {time} seconds before using this command again!");
+        yml.addDefault(Messages.FLY_NOT_ALLOWED_IN_GAME, "&cYou cannot use fly while in a game!");
+        yml.addDefault(Messages.FLY_NO_PERMISSION_SPEED, "&cYou don't have permission to change fly speed!");
+        yml.addDefault(Messages.FLY_NO_PERMISSION_LIST, "&cYou don't have permission to list flying players!");
+        yml.addDefault(Messages.FLY_TARGET_NO_FLY, "&cThe target player is not flying!");
+
+        // Fly state messages
+        yml.addDefault(Messages.FLY_ENABLED, "&aFly mode enabled!");
+        yml.addDefault(Messages.FLY_DISABLED, "&cFly mode disabled!");
+        yml.addDefault(Messages.FLY_ENABLED_OTHER, "&a{player} enabled your fly mode!");
+        yml.addDefault(Messages.FLY_DISABLED_OTHER, "&c{player} disabled your fly mode!");
+        yml.addDefault(Messages.FLY_ENABLED_FOR, "&aEnabled fly mode for {player}!");
+        yml.addDefault(Messages.FLY_DISABLED_FOR, "&cDisabled fly mode for {player}!");
+        yml.addDefault(Messages.FLY_AUTO_DISABLED, "&cYour fly time has expired!");
+
+        // Fly duration messages
+        yml.addDefault(Messages.FLY_DURATION_LIMITED, "&eYour fly duration has been limited to {max} seconds!");
+        yml.addDefault(Messages.FLY_DURATION_WARNING, "&eYour fly will expire in {time} seconds!");
+
+        // Fly speed messages
+        yml.addDefault(Messages.FLY_SPEED_SET, "&aFly speed set to {speed}!");
+        yml.addDefault(Messages.FLY_SPEED_SET_OTHER, "&a{player} set your fly speed to {speed}!");
+        yml.addDefault(Messages.FLY_SPEED_SET_FOR, "&aSet fly speed to {speed} for {player}!");
+
+        // Fly list messages
+        yml.addDefault(Messages.FLY_FLYING_PLAYERS_HEADER, "&6&l» Flying Players «");
+        yml.addDefault(Messages.FLY_NO_FLYING_PLAYERS, "&eNo players are currently flying.");
+        yml.addDefault(Messages.FLY_PLAYER_ENTRY, "&7• &f{player} &7- {status}");
+        yml.addDefault(Messages.FLY_PLAYER_DURATION, " &8({time}s left)");
+        yml.addDefault(Messages.FLY_STATUS_FLYING, "&aFlying");
+        yml.addDefault(Messages.FLY_STATUS_CAN_FLY, "&eCan Fly");
+        yml.addDefault(Messages.FLY_TELEPORT_HOVER, "&eClick to teleport to {player}");
+
+        // Help messages
+        yml.addDefault(Messages.FLY_HELP_HEADER, "&6&l» Fly Command Help «");
+        yml.addDefault(Messages.FLY_HELP_FOOTER, "&7&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        yml.addDefault(Messages.FLY_HELP_TOGGLE, "&e/bw fly &7- Toggle fly mode");
+        yml.addDefault(Messages.FLY_HELP_DURATION, "&e/bw fly <seconds> &7- Toggle fly with duration");
+        yml.addDefault(Messages.FLY_HELP_PLAYER, "&e/bw fly <player> &7- Toggle fly for another player");
+        yml.addDefault(Messages.FLY_HELP_PLAYER_DURATION, "&e/bw fly <player> <seconds> &7- Toggle fly for player with duration");
+        yml.addDefault(Messages.FLY_HELP_SPEED, "&e/bw fly speed <player> <1-10> &7- Set fly speed");
+        yml.addDefault(Messages.FLY_HELP_LIST, "&e/bw fly list &7- List all flying players");
+        yml.addDefault(Messages.FLY_HELP_HELP, "&e/bw fly help &7- Show this help menu");
+
+
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");
@@ -189,7 +242,7 @@ public class English extends Language {
         yml.addDefault(Messages.ARENA_SPECTATOR_FIRST_PERSON_ENTER_SUBTITLE, "&cSNEAK to exit");
         yml.addDefault(Messages.ARENA_SPECTATOR_FIRST_PERSON_LEAVE_TITLE, "&eExiting Spectator mode");
         yml.addDefault(Messages.ARENA_SPECTATOR_FIRST_PERSON_LEAVE_SUBTITLE, "");
-        yml.addDefault(Messages.ARENA_LEAVE_PARTY_DISBANDED, "{prefix}§cThe party owner has left and the party was disbanded!");
+        yml.addDefault(Messages.COMMAND_LEAVE_PARTY_LEADER_LEFT, "{prefix}§cYour party leader has left the arena, so you have been sent to the lobby!");
         yml.addDefault(Messages.GENERATOR_HOLOGRAM_TIER, "&eTier &c{tier}");
         yml.addDefault(Messages.GENERATOR_HOLOGRAM_TYPE_DIAMOND, "&b&lDiamond");
         yml.addDefault(Messages.GENERATOR_HOLOGRAM_TYPE_EMERALD, "&a&lEmerald");

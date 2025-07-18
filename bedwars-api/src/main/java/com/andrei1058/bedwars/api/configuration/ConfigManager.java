@@ -198,6 +198,18 @@ public class ConfigManager {
     /**
      * Get boolean at given path
      */
+
+    /**
+     * Get Integer at given path
+     */
+
+    public double getDouble(String path) {
+        return yml.getDouble(path);
+    }
+
+    /**
+     * Get boolean at given path
+     */
     public boolean getBoolean(String path) {
         return yml.getBoolean(path);
     }
@@ -208,12 +220,6 @@ public class ConfigManager {
     public int getInt(String path) {
         return yml.getInt(path);
     }
-
-    public double getDouble(String path) {
-        return yml.getDouble(path);
-    }
-
-
     /**
      * Get string at given path
      */

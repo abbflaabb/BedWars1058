@@ -502,10 +502,12 @@ public class BedWars extends JavaPlugin {
         }
 
         // Halloween Special
-        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN)) HalloweenSpecial.init();
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_ENABLE_HALLOWEEN))
+            HalloweenSpecial.init();
 
         // Resource Chest
-        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED)) ResourceChestFeature.init();
+        if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_ENABLED))
+            ResourceChestFeature.init();
         // TNT Spoil Feature
         SpoilPlayerTNTFeature.init();
 

@@ -44,7 +44,7 @@ public class BlastProtectionUtil {
             return true;
         }
 
-        boolean rayBlockedByGlass = api.getConfigs().getMainConfig().getBoolean(ConfigPath.GENERAL_TNT_RAY_BLOCKED_BY_GLASS);
+        boolean rayBlockedByGlass = api.getConfigs().getMainConfig().getYml().getBoolean(ConfigPath.GENERAL_TNT_RAY_BLOCKED_BY_GLASS, true);
 
         // Trace blocks from pov to the block location
         final Location target = block.getLocation();

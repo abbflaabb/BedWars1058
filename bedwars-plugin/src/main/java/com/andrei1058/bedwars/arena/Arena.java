@@ -924,32 +924,6 @@ public class Arena implements IArena {
         }
 
         /* Remove also the party */
-        if (getParty().hasParty(p)) {
-            if (getParty().isOwner(p)) {
-                if (status != GameState.restarting) {
-                    if (getParty().isInternal()) {
-                        for (Player mem : new ArrayList<>(getParty().getMembers(p))) {
-                            mem.sendMessage(getMsg(mem, Messages.ARENA_LEAVE_PARTY_DISBANDED));
-                        }
-                    }
-                    getParty().disband(p);
-
-                    // prevent arena from staring with a single player
-                    teamuri = false;
-                    for (Player on : getPlayers()) {
-                        if (getParty().hasParty(on)) {
-                            teamuri = true;
-                        }
-                    }
-                    if (status == GameState.starting && (maxInTeam > players.size() && teamuri || players.size() < minPlayers && !teamuri)) {
-                        changeStatus(GameState.waiting);
-                        for (Player on : players) {
-                            on.sendMessage(getMsg(on, Messages.ARENA_START_COUNTDOWN_STOPPED_INSUFF_PLAYERS_CHAT));
-                        }
-                    }
-                }
-            }
-        }
         p.setFlying(false);
         p.setAllowFlight(false);
 
@@ -977,17 +951,27 @@ public class Arena implements IArena {
         refreshSigns();
         JoinNPC.updateNPCs(getGroup());
 
-        // fix #340
-        // remove player from party if leaves and the owner is still in the arena while waiting or starting
-        if (status == GameState.waiting || status == GameState.starting) {
-            if (BedWars.getParty().hasParty(p) && !BedWars.getParty().isOwner(p)) {
-                for (Player pl : BedWars.getParty().getMembers(p)) {
-                    if (BedWars.getParty().isOwner(pl) && pl.getWorld().getName().equalsIgnoreCase(getArenaName())) {
-                        BedWars.getParty().removeFromParty(p);
-                        break;
+        // Check if the leaving player is a party leader
+        if (BedWars.getParty().hasParty(p) && BedWars.getParty().isOwner(p)) {
+            // Get all members of the party
+            List<Player> partyMembers = BedWars.getParty().getMembers(p);
+            for (Player member : partyMembers) {
+                if (member.equals(p)) continue; // Skip the leader themselves
+
+                IArena memberArena = Arena.getArenaByPlayer(member);
+                if (memberArena != null && memberArena.equals(this)) {
+                    // If the party member is in the same arena, remove them
+                    if (memberArena.isPlayer(member)) {
+                        memberArena.removePlayer(member, disconnect);
+                        member.sendMessage(getMsg(member, Messages.COMMAND_LEAVE_PARTY_LEADER_LEFT)); // Assuming a message for this scenario
+                    } else if (memberArena.isSpectator(member)) {
+                        memberArena.removeSpectator(member, disconnect);
+                        member.sendMessage(getMsg(member, Messages.COMMAND_LEAVE_PARTY_LEADER_LEFT)); // Assuming a message for this scenario
                     }
                 }
             }
+            // Optionally, disband the party after all members are removed from the arena
+             BedWars.getParty().disband(p);
         }
 
         if (lastHit != null) {
@@ -1062,20 +1046,6 @@ public class Arena implements IArena {
                 }
                 if (!disconnect) SidebarService.getInstance().giveSidebar(p, null, false);
             });
-        }
-
-        /* Remove also the party */
-        if (getParty().hasParty(p)) {
-            if (getParty().isOwner(p)) {
-                if (status != GameState.restarting) {
-                    if (getParty().isInternal()) {
-                        for (Player mem : new ArrayList<>(getParty().getMembers(p))) {
-                            mem.sendMessage(getMsg(mem, Messages.ARENA_LEAVE_PARTY_DISBANDED));
-                        }
-                    }
-                    getParty().disband(p);
-                }
-            }
         }
 
         p.setFlying(false);
@@ -2609,7 +2579,7 @@ public class Arena implements IArena {
     public ITeamAssigner getTeamAssigner() {
         return teamAssigner;
     }
-        
+
     @Override
     public int getDiamondTier() {
         return diamondTier;

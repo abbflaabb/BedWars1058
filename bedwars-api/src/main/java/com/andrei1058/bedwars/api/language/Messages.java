@@ -137,6 +137,54 @@ public class Messages {
     public static String ARENA_JOIN_DENIED_NO_PROXY = "arena-join-denied-no-bwp";
     public static String ARENA_SPECTATE_DENIED_SELECTOR = "arena-spectate-denied-selector";
     public static String ARENA_LEAVE_PARTY_DISBANDED = "arena-leave-party-disbanded";
+    public static String COMMAND_LEAVE_PARTY_LEADER_LEFT = "command-leave-party-leader-left";
+
+
+
+    // Fly Command Messages
+    public static String FLY_CONSOLE_ONLY = "fly-console-only";
+    public static String FLY_PLAYER_NOT_FOUND = "fly-player-not-found";
+    public static String FLY_COOLDOWN = "fly-cooldown";
+    public static String FLY_NOT_ALLOWED_IN_GAME = "fly-not-allowed-in-game";
+    public static String FLY_INVALID_DURATION = "fly-invalid-duration";
+    public static String FLY_INVALID_SPEED = "fly-invalid-speed";
+    public static String FLY_NO_PERMISSION_SPEED = "fly-no-permission-speed";
+    public static String FLY_NO_PERMISSION_LIST = "fly-no-permission-list";
+    public static String FLY_TARGET_NO_FLY = "fly-target-no-fly";
+
+    public static String FLY_ENABLED = "fly-enabled";
+    public static String FLY_DISABLED = "fly-disabled";
+    public static String FLY_ENABLED_OTHER = "fly-enabled-other";
+    public static String FLY_DISABLED_OTHER = "fly-disabled-other";
+    public static String FLY_ENABLED_FOR = "fly-enabled-for";
+    public static String FLY_DISABLED_FOR = "fly-disabled-for";
+    public static String FLY_DURATION_WARNING = "fly-duration-warning";
+    public static String FLY_DURATION_LIMITED = "fly-duration-limited";
+    public static String FLY_AUTO_DISABLED = "fly-auto-disabled";
+
+    public static String FLY_SPEED_SET = "fly-speed-set";
+    public static String FLY_SPEED_SET_OTHER = "fly-speed-set-other";
+    public static String FLY_SPEED_SET_FOR = "fly-speed-set-for";
+
+    public static String FLY_HELP_HEADER = "fly-help-header";
+    public static String FLY_HELP_TOGGLE = "fly-help-toggle";
+    public static String FLY_HELP_DURATION = "fly-help-duration";
+    public static String FLY_HELP_PLAYER = "fly-help-player";
+    public static String FLY_HELP_PLAYER_DURATION = "fly-help-player-duration";
+    public static String FLY_HELP_SPEED = "fly-help-speed";
+    public static String FLY_HELP_LIST = "fly-help-list";
+    public static String FLY_HELP_HELP = "fly-help-help";
+    public static String FLY_HELP_FOOTER = "fly-help-footer";
+
+    public static String FLY_FLYING_PLAYERS_HEADER = "fly-flying-players-header";
+    public static String FLY_STATUS_FLYING = "fly-status-flying";
+    public static String FLY_STATUS_CAN_FLY = "fly-status-can-fly";
+    public static String FLY_PLAYER_ENTRY = "fly-player-entry";
+    public static String FLY_PLAYER_DURATION = "fly-player-duration";
+    public static String FLY_TELEPORT_HOVER = "fly-teleport-hover";
+    public static String FLY_NO_FLYING_PLAYERS = "fly-no-flying-players";
+
+
     /**
      * Arena status/ status change related
      */
