@@ -30,11 +30,18 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
         this.arena = arena;
 
         // Initially load messages for all current players and spectators
-        for (Player player : arena.getPlayers()) {
-            loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+        List<Player> players = arena.getPlayers();
+        if (players != null) {
+            for (Player player : players) {
+                loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+            }
         }
-        for (Player player : arena.getSpectators()) {
-            loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+
+        List<Player> spectators = arena.getSpectators();
+        if (spectators != null) {
+            for (Player player : spectators) {
+                loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+            }
         }
 
         // Schedule task synchronously (safe for Bukkit API calls)
@@ -77,8 +84,18 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
      */
     private void updatePlayers() {
         Set<Player> all = new HashSet<>();
-        all.addAll(arena.getPlayers());
-        all.addAll(arena.getSpectators());
+
+        // Safely add players - check for null first
+        List<Player> players = arena.getPlayers();
+        if (players != null) {
+            all.addAll(players);
+        }
+
+        // Safely add spectators - check for null first
+        List<Player> spectators = arena.getSpectators();
+        if (spectators != null) {
+            all.addAll(spectators);
+        }
 
         // Add new players/spectators with loaded messages
         for (Player p : all) {
@@ -103,19 +120,23 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
             msg = msg.replace("{arenaName}", arena.getArenaName());
         }
 
-        // Replace players alive count
-        msg = msg.replace("{playersAlive}", String.valueOf(arena.getPlayers().size()));
+        // Replace players alive count - safe null check
+        List<Player> players = arena.getPlayers();
+        int playersCount = players != null ? players.size() : 0;
+        msg = msg.replace("{playersAlive}", String.valueOf(playersCount));
 
         // Replace player name
         if (p != null && p.getName() != null) {
             msg = msg.replace("{playerName}", p.getName());
         }
 
-        // Replace spectators count
-        msg = msg.replace("{spectators}", String.valueOf(arena.getSpectators().size()));
+        // Replace spectators count - safe null check
+        List<Player> spectators = arena.getSpectators();
+        int spectatorsCount = spectators != null ? spectators.size() : 0;
+        msg = msg.replace("{spectators}", String.valueOf(spectatorsCount));
 
         // Replace total players (alive + spectators)
-        msg = msg.replace("{totalPlayers}", String.valueOf(arena.getPlayers().size() + arena.getSpectators().size()));
+        msg = msg.replace("{totalPlayers}", String.valueOf(playersCount + spectatorsCount));
 
         // Replace game state
         if (arena.getStatus() != null) {
@@ -140,8 +161,17 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
 
         // Send messages to both players and spectators
         Set<Player> allRecipients = new HashSet<>();
-        allRecipients.addAll(arena.getPlayers());
-        allRecipients.addAll(arena.getSpectators());
+
+        // Safely add players and spectators
+        List<Player> players = arena.getPlayers();
+        if (players != null) {
+            allRecipients.addAll(players);
+        }
+
+        List<Player> spectators = arena.getSpectators();
+        if (spectators != null) {
+            allRecipients.addAll(spectators);
+        }
 
         for (Player player : allRecipients) {
             try {
