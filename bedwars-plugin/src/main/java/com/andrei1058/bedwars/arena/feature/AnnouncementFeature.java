@@ -83,29 +83,41 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
      * Adds messages for new players, removes players who left.
      */
     private void updatePlayers() {
+        if (arena == null) {
+            return;
+        }
+
         Set<Player> all = new HashSet<>();
 
         // Safely add players - check for null first
-        List<Player> players = arena.getPlayers();
-        if (players != null) {
-            all.addAll(players);
+        try {
+            List<Player> players = arena.getPlayers();
+            if (players != null && !players.isEmpty()) {
+                all.addAll(players);
+            }
+        } catch (Exception e) {
+            // Handle any exceptions from arena.getPlayers()
         }
 
         // Safely add spectators - check for null first
-        List<Player> spectators = arena.getSpectators();
-        if (spectators != null) {
-            all.addAll(spectators);
+        try {
+            List<Player> spectators = arena.getSpectators();
+            if (spectators != null && !spectators.isEmpty()) {
+                all.addAll(spectators);
+            }
+        } catch (Exception e) {
+            // Handle any exceptions from arena.getSpectators()
         }
 
         // Add new players/spectators with loaded messages
         for (Player p : all) {
-            if (!messages.containsKey(p)) {
+            if (p != null && !messages.containsKey(p)) {
                 loadMessagesForPlayer(p, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
             }
         }
 
         // Remove players who left arena or stopped spectating
-        messages.keySet().removeIf(p -> !all.contains(p));
+        messages.keySet().removeIf(p -> p == null || !all.contains(p));
     }
 
     /**
@@ -155,7 +167,12 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
         }
 
         // Update players list and message cache
-        updatePlayers();
+        try {
+            updatePlayers();
+        } catch (Exception e) {
+            // If updatePlayers fails, continue with current cached players
+            e.printStackTrace();
+        }
 
         if (arena.getStatus() != GameState.playing) return;
 
@@ -163,17 +180,27 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
         Set<Player> allRecipients = new HashSet<>();
 
         // Safely add players and spectators
-        List<Player> players = arena.getPlayers();
-        if (players != null) {
-            allRecipients.addAll(players);
+        try {
+            List<Player> players = arena.getPlayers();
+            if (players != null && !players.isEmpty()) {
+                allRecipients.addAll(players);
+            }
+        } catch (Exception e) {
+            // Handle any exceptions from arena.getPlayers()
         }
 
-        List<Player> spectators = arena.getSpectators();
-        if (spectators != null) {
-            allRecipients.addAll(spectators);
+        try {
+            List<Player> spectators = arena.getSpectators();
+            if (spectators != null && !spectators.isEmpty()) {
+                allRecipients.addAll(spectators);
+            }
+        } catch (Exception e) {
+            // Handle any exceptions from arena.getSpectators()
         }
 
         for (Player player : allRecipients) {
+            if (player == null) continue;
+
             try {
                 List<String> playerMessages = messages.get(player);
                 if (playerMessages == null || playerMessages.isEmpty()) {
@@ -183,12 +210,19 @@ public class AnnouncementFeature implements Runnable, AnnouncementTask {
 
                 if (playerMessages != null && !playerMessages.isEmpty()) {
                     String msg = replacePlaceholders(player, playerMessages.get(index % playerMessages.size()));
-                    player.sendMessage(msg);
+                    if (msg != null) {
+                        player.sendMessage(msg);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 // Reload messages if error occurs (for example after reconnect)
-                loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+                try {
+                    loadMessagesForPlayer(player, Messages.ARENA_IN_GAME_ANNOUNCEMENT);
+                } catch (Exception ex) {
+                    // If even reloading fails, remove this player from messages
+                    messages.remove(player);
+                }
             }
         }
 
