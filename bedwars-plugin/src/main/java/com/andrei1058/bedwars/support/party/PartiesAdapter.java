@@ -1,4 +1,5 @@
 
+
 package com.andrei1058.bedwars.support.party;
 
 import com.alessiodp.parties.api.interfaces.PartiesAPI;

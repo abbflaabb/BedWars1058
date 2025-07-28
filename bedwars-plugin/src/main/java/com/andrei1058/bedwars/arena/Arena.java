@@ -481,7 +481,7 @@ public class Arena implements IArena {
             for (Player on : players) {
                 on.sendMessage(
                         getMsg(on, Messages.COMMAND_JOIN_PLAYER_JOIN_MSG)
-                                .replace("{vPrefix}", getChatSupport().getPrefix(p))
+                                .replace("{Prefix}", getChatSupport().getPrefix(p))
                                 .replace("{vSuffix}", getChatSupport().getSuffix(p))
                                 .replace("{playername}", p.getName())
                                 .replace("{player}", p.getDisplayName())
@@ -869,7 +869,7 @@ public class Arena implements IArena {
         for (Player on : getPlayers()) {
             on.sendMessage(
                     getMsg(on, Messages.COMMAND_LEAVE_MSG)
-                            .replace("{vPrefix}", getChatSupport().getPrefix(p))
+                            .replace("{prefix}", getChatSupport().getPrefix(p))
                             .replace("{vSuffix}", getChatSupport().getSuffix(p))
                             .replace("{playername}", p.getName())
                             .replace("{player}", p.getDisplayName()
@@ -877,7 +877,7 @@ public class Arena implements IArena {
             );
         }
         for (Player on : getSpectators()) {
-            on.sendMessage(getMsg(on, Messages.COMMAND_LEAVE_MSG).replace("{vPrefix}", getChatSupport().getPrefix(p)).replace("{playername}", p.getName()).replace("{player}", p.getDisplayName()));
+            on.sendMessage(getMsg(on, Messages.COMMAND_LEAVE_MSG).replace("{prefix}", getChatSupport().getPrefix(p)).replace("{playername}", p.getName()).replace("{player}", p.getDisplayName()));
         }
 
         if (getServerType() == ServerType.SHARED) {
@@ -1048,6 +1048,20 @@ public class Arena implements IArena {
             });
         }
 
+        /* Remove also the party */
+        if (getParty().hasParty(p)) {
+            if (getParty().isOwner(p)) {
+                if (status != GameState.restarting) {
+                    if (getParty().isInternal()) {
+                        for (Player mem : new ArrayList<>(getParty().getMembers(p))) {
+                            mem.sendMessage(getMsg(mem, Messages.ARENA_LEAVE_PARTY_DISBANDED));
+                        }
+                    }
+                    getParty().disband(p);
+                }
+            }
+        }
+
         p.setFlying(false);
         p.setAllowFlight(false);
 
@@ -1071,6 +1085,7 @@ public class Arena implements IArena {
         refreshSigns();
         JoinNPC.updateNPCs(getGroup());
     }
+
 
     /**
      * Rejoin an arena

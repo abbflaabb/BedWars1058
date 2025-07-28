@@ -25,7 +25,6 @@ public class Permissions {
     public static final String PERMISSION_VIP = BedWars.mainCmd+".vip";
     public static final String PERMISSION_GMC = BedWars.mainCmd + ".GMC";
     public static final String PERMISSION_GMS = BedWars.mainCmd + ".GMS";
-    public static final String PERMISSION_GMSP = BedWars.mainCmd + ".GMSP";
 
 
     /**
@@ -38,17 +37,5 @@ public class Permissions {
             }
         }
         return false;
-    }
-
-    /**
-     * Check if player has all given permissions.
-     */
-    public static boolean hasPermissions(Player player, String... permissions){
-        for (String permission : permissions){
-            if (!player.hasPermission(permission)){
-                return false;
-            }
-        }
-        return true;
     }
 }

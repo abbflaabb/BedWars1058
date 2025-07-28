@@ -118,7 +118,7 @@ public class ChatFormatting implements Listener {
 
     private static String parsePHolders(String content, Player player, @Nullable ITeam team) {
         content = content
-                .replace("{vPrefix}", getChatSupport().getPrefix(player))
+                .replace("{Prefix}", getChatSupport().getPrefix(player))
                 .replace("{vSuffix}", getChatSupport().getSuffix(player))
                 .replace("{playername}", player.getName())
                 .replace("{level}", getLevelSupport().getLevel(player))

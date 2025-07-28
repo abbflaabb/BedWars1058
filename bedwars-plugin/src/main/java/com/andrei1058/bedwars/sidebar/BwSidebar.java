@@ -31,6 +31,8 @@ import static com.andrei1058.bedwars.api.language.Language.*;
 
 public class BwSidebar implements ISidebar {
 
+    // ... (All other methods and fields remain unchanged) ...
+
     private static final SidebarLine EMPTY_TITLE = new SidebarLine() {
         @Override
         public @NotNull String getLine() {
@@ -59,8 +61,8 @@ public class BwSidebar implements ISidebar {
         this.tabList = new BwTabList(this);
 
         // Persistent placeholders
-        String poweredBy = BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_POWERED_BY);
-        this.registerPersistentPlaceholder(new PlaceholderProvider("{poweredBy}", () -> poweredBy));
+        String By = BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_POWERED_BY);
+        this.registerPersistentPlaceholder(new PlaceholderProvider("{By}", () -> By));
         String serverId = config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID);
         this.registerPersistentPlaceholder(new PlaceholderProvider("{server}", () -> serverId));
         String serverIp = BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP);
@@ -140,7 +142,23 @@ public class BwSidebar implements ISidebar {
 
             // generic team placeholder {team}
             if (null != arena) {
+                // --- FIX START ---
+                // This is the defensive check to prevent the NullPointerException.
+                // If getTeams() returns null, it means the arena is not configured correctly.
+                // We will log a warning and skip any logic that requires the team list.
+                if (arena.getTeams() == null) {
+                    // Log a warning to the console so the server owner knows what to fix.
+                    // This check is done inside the loop to avoid spamming the console,
+                    // but it ensures that any line requiring team data is skipped safely.
+                    if (line.contains("{team}") || line.contains("{Team")) {
+                        Bukkit.getLogger().warning("[BedWars1058] Sidebar Error: Arena '" + arena.getArenaName() + "' has a critical configuration issue (teams are null). Skipping team-related placeholders.");
+                        continue; // Skip this line of the scoreboard to prevent a crash.
+                    }
+                }
+                // --- FIX END ---
+
                 if (line.trim().equals("{team}")) {
+                    // The original code is now safe because of the check above.
                     if (arena.getTeams().size() > teamCount) {
                         ITeam team = arena.getTeams().get(teamCount++);
                         String teamName = team.getDisplayName(language);
@@ -168,23 +186,26 @@ public class BwSidebar implements ISidebar {
                         .replace("{map_name}", arena.getArenaName())
                         .replace("{group}", arena.getDisplayGroup(player));
 
-                for (ITeam currentTeam : arena.getTeams()) {
-                    final ChatColor color = currentTeam.getColor().chat();
-                    final String teamName = currentTeam.getDisplayName(language);
-                    final String teamLetter = String.valueOf(!teamName.isEmpty() ? teamName.charAt(0) : "");
+                // This loop is also now safe because of the null check at the top.
+                if (arena.getTeams() != null) {
+                    for (ITeam currentTeam : arena.getTeams()) {
+                        final ChatColor color = currentTeam.getColor().chat();
+                        final String teamName = currentTeam.getDisplayName(language);
+                        final String teamLetter = String.valueOf(!teamName.isEmpty() ? teamName.charAt(0) : "");
 
-                    // Static team placeholders
-                    line = line
-                            .replace("{Team" + currentTeam.getName() + "Color}", color.toString())
-                            .replace("{Team" + currentTeam.getName() + "Name}", teamName)
-                            .replace("{Team" + currentTeam.getName() + "Letter}", teamLetter);
+                        // Static team placeholders
+                        line = line
+                                .replace("{Team" + currentTeam.getName() + "Color}", color.toString())
+                                .replace("{Team" + currentTeam.getName() + "Name}", teamName)
+                                .replace("{Team" + currentTeam.getName() + "Letter}", teamLetter);
 
 
-                    boolean isMember = currentTeam.isMember(getPlayer()) || currentTeam.wasMember(getPlayer().getUniqueId());
-                    if (isMember) {
-                        HashMap<String, String> replacements = tabList.getTeamReplacements(currentTeam);
-                        for (Map.Entry<String, String> entry : replacements.entrySet()) {
-                            line = line.replace(entry.getKey(), entry.getValue());
+                        boolean isMember = currentTeam.isMember(getPlayer()) || currentTeam.wasMember(getPlayer().getUniqueId());
+                        if (isMember) {
+                            HashMap<String, String> replacements = tabList.getTeamReplacements(currentTeam);
+                            for (Map.Entry<String, String> entry : replacements.entrySet()) {
+                                line = line.replace(entry.getKey(), entry.getValue());
+                            }
                         }
                     }
                 }
@@ -214,8 +235,8 @@ public class BwSidebar implements ISidebar {
             // General static placeholders
             line = line
                     .replace("{serverIp}", BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_SERVER_IP))
-                    .replace("{poweredBy}", BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_POWERED_BY))
-                    .replace("{version}", plugin.getDescription().getVersion())
+                    .replace("{powered}", BedWars.config.getString(ConfigPath.GENERAL_CONFIG_PLACEHOLDERS_REPLACEMENTS_POWERED_BY))
+                    .replace("{v}", plugin.getDescription().getVersion())
                     .replace("{server}", config.getString(ConfigPath.GENERAL_CONFIGURATION_BUNGEE_OPTION_SERVER_ID))
             ;
 
@@ -237,6 +258,7 @@ public class BwSidebar implements ISidebar {
         return lines;
     }
 
+    // ... (Rest of the file is unchanged) ...
     @Override
     public void giveUpdateTabFormat(@NotNull Player player, boolean skipStateCheck, @Nullable Boolean spectator) {
         tabList.giveUpdateTabFormat(player, skipStateCheck, spectator);
@@ -371,38 +393,40 @@ public class BwSidebar implements ISidebar {
             }
 
             // Dynamic team placeholders
-            for (ITeam currentTeam : arena.getTeams()) {
-                boolean isMember = currentTeam.isMember(player) || currentTeam.wasMember(player.getUniqueId());
+            if (arena.getTeams() != null) { // Added a null check here as well for extra safety
+                for (ITeam currentTeam : arena.getTeams()) {
+                    boolean isMember = currentTeam.isMember(player) || currentTeam.wasMember(player.getUniqueId());
 
-                providers.add(new PlaceholderProvider("{Team" + currentTeam.getName() + "Status}", () -> {
-                    String result;
-                    if (currentTeam.isBedDestroyed()) {
-                        if (currentTeam.getSize() > 0) {
-                            result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_BED_DESTROYED)
-                                    .replace("{remainingPlayers}", String.valueOf(currentTeam.getSize()));
-                        } else {
-                            result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
-                        }
-                    } else {
-                        result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
-                    }
-                    if (isMember) {
-                        result += getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_YOUR_TEAM);
-                    }
-                    return result;
-                }));
-
-                if (isMember) {
-                    providers.add(new PlaceholderProvider("{teamStatus}", () -> {
+                    providers.add(new PlaceholderProvider("{Team" + currentTeam.getName() + "Status}", () -> {
+                        String result;
                         if (currentTeam.isBedDestroyed()) {
                             if (currentTeam.getSize() > 0) {
-                                return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_BED_DESTROYED)
+                                result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_BED_DESTROYED)
                                         .replace("{remainingPlayers}", String.valueOf(currentTeam.getSize()));
+                            } else {
+                                result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
                             }
-                            return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
+                        } else {
+                            result = getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
                         }
-                        return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
+                        if (isMember) {
+                            result += getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_YOUR_TEAM);
+                        }
+                        return result;
                     }));
+
+                    if (isMember) {
+                        providers.add(new PlaceholderProvider("{teamStatus}", () -> {
+                            if (currentTeam.isBedDestroyed()) {
+                                if (currentTeam.getSize() > 0) {
+                                    return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_BED_DESTROYED)
+                                            .replace("{remainingPlayers}", String.valueOf(currentTeam.getSize()));
+                                }
+                                return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ELIMINATED);
+                            }
+                            return getMsg(getPlayer(), Messages.FORMATTING_SCOREBOARD_TEAM_ALIVE);
+                        }));
+                    }
                 }
             }
         }

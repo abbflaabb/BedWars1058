@@ -1,5 +1,3 @@
-
-
 package com.andrei1058.bedwars.levels.internal;
 
 import com.andrei1058.bedwars.BedWars;
@@ -46,14 +44,19 @@ public class PlayerLevel {
         this.level = level;
         this.currentXp = currentXp;
         updateProgressBar();
-        //requiredXp = nextLevelCost >= 1000 ? nextLevelCost % 1000 == 0 ? nextLevelCost / 1000 + "k" : (double) nextLevelCost / 1000 + "k" : String.valueOf(nextLevelCost);
-        //formattedCurrentXp = currentXp >= 1000 ? currentXp % 1000 == 0 ? currentXp / 1000 + "k" : (double) currentXp / 1000 + "k" : String.valueOf(currentXp);
         if (!levelByPlayer.containsKey(player)) levelByPlayer.put(player, this);
     }
 
     public void setLevelName(int level) {
-        this.levelName = ChatColor.translateAlternateColorCodes('&', LevelsConfig.getLevelName(level)).replace("{number}", String.valueOf(level));
+        // MODIFIED: Get the original format from the config (e.g., "&e[{number}]")
+        String format = LevelsConfig.getLevelName(level);
 
+        // Replace the brackets with the new symbol and remove the closing bracket
+        // This turns "[{number}]" into "✫{number}" while keeping color codes
+        String newFormat = format.replace("[", "").replace("]", "");
+
+        // Apply color codes and replace the {number} placeholder
+        this.levelName = ChatColor.translateAlternateColorCodes('&', newFormat).replace("{number}", String.valueOf(level));
     }
 
     public void setNextLevelCost(int level, boolean initialize) {
@@ -178,7 +181,8 @@ public class PlayerLevel {
     public void setLevel(int level) {
         this.level = level;
         nextLevelCost = LevelsConfig.getNextCost(level);
-        this.levelName = ChatColor.translateAlternateColorCodes('&', LevelsConfig.getLevelName(level)).replace("{number}", String.valueOf(level));
+        // MODIFIED: This now calls our new logic in setLevelName
+        setLevelName(level);
         requiredXp = nextLevelCost >= 1000 ? nextLevelCost % 1000 == 0 ? nextLevelCost / 1000 + "k" : (double) nextLevelCost / 1000 + "k" : String.valueOf(nextLevelCost);
         updateProgressBar();
         modified = true;
@@ -200,7 +204,8 @@ public class PlayerLevel {
             currentXp = currentXp - nextLevelCost;
             level++;
             nextLevelCost = LevelsConfig.getNextCost(level);
-            this.levelName = ChatColor.translateAlternateColorCodes('&', LevelsConfig.getLevelName(level)).replace("{number}", String.valueOf(level));
+            // MODIFIED: This now calls our new logic in setLevelName
+            setLevelName(level);
             requiredXp = formatNumber(nextLevelCost);
             formattedCurrentXp = formatNumber(currentXp);
             Bukkit.getPluginManager().callEvent(new PlayerLevelUpEvent(Bukkit.getPlayer(getUuid()), level, nextLevelCost));
@@ -231,8 +236,6 @@ public class PlayerLevel {
      */
     public void destroy() {
         levelByPlayer.remove(uuid);
-        //BedWars.getRemoteDatabase().setLevelData(uuid, level, currentXp, LevelsConfig.levels.getYml().get("levels." + level + ".name") == null ?
-        //        LevelsConfig.levels.getYml().getString("levels.others.name") : LevelsConfig.levels.getYml().getString("levels." + level + ".name"), nextLevelCost);
         updateDatabase();
     }
 

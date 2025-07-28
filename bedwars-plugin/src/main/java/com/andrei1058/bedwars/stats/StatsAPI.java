@@ -91,4 +91,5 @@ public class StatsAPI implements BedWars.IStats {
     public int getPlayerGamesPlayed(UUID p) {
         return getData(p).getGamesPlayed();
     }
+
 }

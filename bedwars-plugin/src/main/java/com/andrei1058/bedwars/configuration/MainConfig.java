@@ -89,6 +89,7 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.FLY_COMMAND_ALLOW_IN_GAME, false);
         yml.addDefault(ConfigPath.FLY_COMMAND_MAX_DURATION, 300);
         yml.addDefault(ConfigPath.FLY_COMMAND_ENABLE_SOUNDS, true);
+
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_WAITING, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_INGAME, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ALLOW_FIRE_EXTINGUISH, true);

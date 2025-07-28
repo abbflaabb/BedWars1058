@@ -121,6 +121,7 @@ public interface BedWars {
          * You get data from the local cache.
          */
         int getPlayerGamesPlayed(UUID p);
+
     }
 
 

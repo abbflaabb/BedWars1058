@@ -71,7 +71,8 @@ public class MainCommand extends BukkitCommand implements ParentCommand {
         new Gmc(this, "gmc"); //priority 22
         new Gms(this, "gms"); //priority 23
         new Gmsp(this, "gmsp"); //priority 24
-        new FlyCommand(this, "fly"); //priority 25
+        new Fly(this, "fly"); //priority 25
+
         /* Arena setup commands (in world) */
         new AutoCreateTeams(this, "autoCreateTeams");
         new SetWaitingSpawn(this, "setWaitingSpawn");

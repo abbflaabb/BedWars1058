@@ -23,17 +23,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class FlyCommand extends SubCommand {
+public class Fly extends SubCommand {
 
     // Cooldown management
     private static final Map<UUID, Long> flyCooldowns = new HashMap<>();
     private static final Map<UUID, Long> flyDurations = new HashMap<>();
     private static final Map<UUID, BukkitRunnable> flyTasks = new HashMap<>();
 
-    public FlyCommand(ParentCommand parent, String name) {
+    public Fly(ParentCommand parent, String name) {
         super(parent, name);
         setArenaSetupCommand(false);
-        setPermission("bw.fly");
+
     }
 
     @Override
@@ -48,8 +48,8 @@ public class FlyCommand extends SubCommand {
         Player player = (Player) sender;
 
         // Check if player has permission
-        if (!hasPermission(sender)) {
-            player.sendMessage(Language.getMsg(player, Messages.COMMAND_NOT_FOUND_OR_INSUFF_PERMS));
+        if (!player.hasPermission("bw.fly.vip")) {
+            player.sendMessage(Language.getMsg(player, Messages.FLY_ONLY_VIP));
             return true;
         }
 

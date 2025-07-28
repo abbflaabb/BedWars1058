@@ -73,4 +73,5 @@ public interface ISidebar {
      * Register a placeholder that is not going to be removed trough game state changes.
      */
     boolean registerPersistentPlaceholder(PlaceholderProvider placeholderProvider);
+    
 }

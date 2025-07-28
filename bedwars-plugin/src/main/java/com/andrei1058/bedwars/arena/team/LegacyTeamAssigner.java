@@ -1,5 +1,4 @@
 
-
 package com.andrei1058.bedwars.arena.team;
 
 import com.andrei1058.bedwars.api.arena.IArena;

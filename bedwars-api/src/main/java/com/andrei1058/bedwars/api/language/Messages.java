@@ -120,7 +120,11 @@ public class Messages {
     public static String COMMAND_FORCESTART_SUCCESS = "cmd-start";
     public static String COMMAND_FORCESTART_NO_PERM = "cmd-start-no-perm";
     public static String COMMAND_COOLDOWN = "cmd-cooldown";
+    public static final String FLY_ONLY_VIP = "fly-only-vip";
 
+    public static final String BED_STATUS_UNKNOWN = "bed-status-unknown";
+    public static final String BED_STATUS_DESTROYED = "bed-status-destroyed";
+    public static final String BED_STATUS_ALIVE = "bed-status-alive";
 
     public static String RESOURCE_CHEST_BLOCKED_ITEM = "resource-chest-blocked-item";
     public static String RESOURCE_CHEST_FULL = "resource-chest-full";

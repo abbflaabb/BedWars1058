@@ -19,11 +19,11 @@ public class PAFBungeecordRedisApi implements Party {
         if (PAFPlayerManager.getInstance() == null) return null;
         return PartyManager.getInstance().getParty(PAFPlayerManager.getInstance().getPlayer(p.getUniqueId()));
     }
-
     @Override
     public boolean hasParty(Player p) {
         return getPAFParty(p) != null;
     }
+
 
     @Override
     public int partySize(Player p) {
