@@ -4,6 +4,7 @@ package com.andrei1058.bedwars.database;
 
 import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.language.Language;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 import com.andrei1058.bedwars.shop.quickbuy.QuickBuyElement;
 import com.andrei1058.bedwars.stats.PlayerStats;
 import com.zaxxer.hikari.HikariConfig;
@@ -147,7 +148,7 @@ public class MySQL implements Database {
     }
 
     @Override
-    public void saveStats(PlayerStats stats) {
+    public void saveStats(IPlayerStats stats) {
         String sql;
         try (Connection connection = dataSource.getConnection()) {
             if (hasStats(stats.getUuid())) {
@@ -191,8 +192,8 @@ public class MySQL implements Database {
     }
 
     @Override
-    public PlayerStats fetchStats(UUID uuid) {
-        PlayerStats stats = new PlayerStats(uuid);
+    public IPlayerStats fetchStats(UUID uuid) {
+        IPlayerStats stats = new PlayerStats(uuid);
         String sql = "SELECT first_play, last_play, wins, kills, final_kills, looses, deaths, final_deaths," +
                 "beds_destroyed, games_played FROM global_stats WHERE uuid = ?;";
         try (Connection connection = dataSource.getConnection()) {
@@ -220,7 +221,6 @@ public class MySQL implements Database {
         }
         return stats;
     }
-
     @Override
     public void setQuickBuySlot(UUID uuid, String shopPath, int slot) {
         String sql = "SELECT uuid FROM quick_buy_2 WHERE uuid = ?;";

@@ -1,12 +1,13 @@
-
 package com.andrei1058.bedwars.stats;
 
 import com.andrei1058.bedwars.api.BedWars;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class StatsAPI implements BedWars.IStats {
 
     private static StatsAPI instance;
@@ -21,8 +22,8 @@ public class StatsAPI implements BedWars.IStats {
     private StatsAPI() {
     }
 
-    private PlayerStats getData(UUID uuid) {
-        PlayerStats stats = com.andrei1058.bedwars.BedWars.getStatsManager().getUnsafe(uuid);
+    private IPlayerStats getData(UUID uuid) {
+        IPlayerStats stats = com.andrei1058.bedwars.BedWars.getStatsManager().getUnsafe(uuid);
         if (stats == null) {
             stats = com.andrei1058.bedwars.BedWars.getRemoteDatabase().fetchStats(uuid);
         }
@@ -91,5 +92,4 @@ public class StatsAPI implements BedWars.IStats {
     public int getPlayerGamesPlayed(UUID p) {
         return getData(p).getGamesPlayed();
     }
-
 }

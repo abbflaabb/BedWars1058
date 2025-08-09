@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.sidebar;
 
 import com.andrei1058.bedwars.BedWars;
@@ -350,7 +349,7 @@ public class BwTabList {
 
         strings = new ArrayList<>();
         for (String string : Language.getList(sidebar.getPlayer(), path)) {
-            String parsed = string.replace("{Prefix}", BedWars.getChatSupport().getPrefix(targetPlayer))
+            String parsed = string.replace("{vPrefix}", BedWars.getChatSupport().getPrefix(targetPlayer))
                     .replace("{vSuffix}", BedWars.getChatSupport().getSuffix(targetPlayer));
 
             if (null != replacements) {

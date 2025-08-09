@@ -159,8 +159,8 @@ public class GamePlayingTask implements Runnable, PlayingTask {
                             distance = (int) p.getLocation().distance(p2.getLocation());
                         }
                     }
-                    nms.playAction(p, getMsg(p, Messages.FORMATTING_ACTION_BAR_TRACKING).replace("{team}", t.getColor().chat() + t.getDisplayName(Language.getPlayerLanguage(p)))
-                            .replace("{distance}", t.getColor().chat().toString() + distance).replace("&", "§"));
+//                    nms.playAction(p, getMsg(p, Messages.FORMATTING_ACTION_BAR_TRACKING).replace("{team}", t.getColor().chat() + t.getDisplayName(Language.getPlayerLanguage(p)))
+//                            .replace("{distance}", t.getColor().chat().toString() + distance).replace("&", "§"));
                 }
             }
 

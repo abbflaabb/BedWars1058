@@ -79,7 +79,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -332,7 +331,6 @@ public class BedWars extends JavaPlugin {
                 party = new NoParty();
             }
         }, 10L);
-
         /* Levels support */
         setLevelAdapter(new InternalLevel());
 

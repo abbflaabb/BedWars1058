@@ -7,6 +7,7 @@ import com.andrei1058.bedwars.api.command.SubCommand;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
+import com.andrei1058.bedwars.configuration.Sounds;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -30,10 +31,22 @@ public class Fly extends SubCommand {
     private static final Map<UUID, Long> flyDurations = new HashMap<>();
     private static final Map<UUID, BukkitRunnable> flyTasks = new HashMap<>();
 
+    // Static initializer to add default sounds
+    static {
+        try {
+            // Add fly-related sounds with version compatibility
+            Sounds.addDefSound("FlyEnabled", BedWars.getForCurrentVersion("ENDERDRAGON_HIT", "ENTITY_ENDER_DRAGON_HURT", "ENTITY_ENDER_DRAGON_HURT"));
+            Sounds.addDefSound("FlyDisabled", BedWars.getForCurrentVersion("LEVEL_UP", "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP"));
+            Sounds.addDefSound("FlyAdminAction", BedWars.getForCurrentVersion("ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP"));
+            Sounds.addDefSound("FlySpeedChange", BedWars.getForCurrentVersion("ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP"));
+        } catch (Exception e) {
+            BedWars.plugin.getLogger().warning("Could not register fly sounds: " + e.getMessage());
+        }
+    }
+
     public Fly(ParentCommand parent, String name) {
         super(parent, name);
         setArenaSetupCommand(false);
-
     }
 
     @Override
@@ -143,14 +156,14 @@ public class Fly extends SubCommand {
         // Play sound effects (only if enabled in config)
         if (BedWars.config.getBoolean(ConfigPath.FLY_COMMAND_ENABLE_SOUNDS)) {
             if (newFlyState) {
-                target.playSound(target.getLocation(), Sound.ENDERDRAGON_HIT, 1.0f, 1.0f);
+                Sounds.playSound("FlyEnabled", target);
                 if (!sender.equals(target)) {
-                    sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
+                    Sounds.playSound("FlyAdminAction", sender);
                 }
             } else {
-                target.playSound(target.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
+                Sounds.playSound("FlyDisabled", target);
                 if (!sender.equals(target)) {
-                    sender.playSound(sender.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
+                    Sounds.playSound("FlyAdminAction", sender);
                 }
             }
         }
@@ -194,7 +207,7 @@ public class Fly extends SubCommand {
                             target.setFlying(false);
                             target.sendMessage(Language.getMsg(target, Messages.FLY_AUTO_DISABLED));
                             if (BedWars.config.getBoolean(ConfigPath.FLY_COMMAND_ENABLE_SOUNDS)) {
-                                target.playSound(target.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
+                                Sounds.playSound("FlyDisabled", target);
                             }
                         }
                         flyDurations.remove(target.getUniqueId());
@@ -250,7 +263,7 @@ public class Fly extends SubCommand {
         }
 
         if (BedWars.config.getBoolean(ConfigPath.FLY_COMMAND_ENABLE_SOUNDS)) {
-            target.playSound(target.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.5f);
+            Sounds.playSound("FlySpeedChange", target);
         }
         return true;
     }

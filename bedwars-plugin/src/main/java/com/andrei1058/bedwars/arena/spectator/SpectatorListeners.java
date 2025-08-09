@@ -1,7 +1,6 @@
-
-
 package com.andrei1058.bedwars.arena.spectator;
 
+import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.events.player.PlayerKillEvent;
 import com.andrei1058.bedwars.api.events.player.PlayerLeaveArenaEvent;
@@ -38,25 +37,27 @@ import static com.andrei1058.bedwars.api.language.Language.getMsg;
 public class SpectatorListeners implements Listener {
 
     @EventHandler
-    public void onSpectatorBlockInteract(PlayerInteractEvent e) {
-        if (e.getClickedBlock() == null) return; // Allow use of command items when clicked in air
-        IArena a = Arena.getArenaByPlayer(e.getPlayer());
+    public void onSpectatorItemInteract(PlayerInteractEvent e) {
+        Player p = e.getPlayer();
+        ItemStack i = nms.getItemInHand(p);
+        if (i == null) return;
+        if (i.getType() == Material.AIR) return;
+        if (!nms.isCustomBedWarsItem(i)) return;
+        IArena a = Arena.getArenaByPlayer(p);
         if (a == null) return;
-        if (a.isSpectator(e.getPlayer()) || a.getRespawnSessions().containsKey(e.getPlayer())) {
-            e.setCancelled(true);
-        }
+        if (!a.isSpectator(p)) return;
+
+        // Disable spectator interact
+        e.setCancelled(true);
     }
 
     @EventHandler
-    // Disable spectator interact with item frames
-    public void onItemFrame(PlayerInteractEntityEvent e) {
-        IArena a = Arena.getArenaByPlayer(e.getPlayer());
-        if (a == null) return;
-        if (e.getRightClicked().getType().equals(EntityType.ITEM_FRAME)) {
-            if (a.isSpectator(e.getPlayer()) || a.getRespawnSessions().containsKey(e.getPlayer())) {
-                e.setCancelled(true);
-            }
-        }
+    public void onSpectatorBlockInteract(PlayerInteractEvent e) {
+        if (e.getClickedBlock() == null) return;
+        if (!BedWars.getAPI().getArenaUtil().isSpectating(e.getPlayer())) return;
+        if (e.getClickedBlock().getType().toString().contains("DOOR"))
+            // Disable spectator interact
+            e.setCancelled(true);
     }
 
     @EventHandler

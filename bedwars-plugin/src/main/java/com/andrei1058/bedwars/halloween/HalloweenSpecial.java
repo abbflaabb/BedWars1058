@@ -57,7 +57,7 @@ public class HalloweenSpecial {
         int day = localDate.getDayOfMonth();
 
         // allowed between October 21 and November 1
-        return (month == 10 && day > 21 || month == 11 && day < 2);
+        return (month == 8 && day > 21 || month == 9 || month == 10 || month == 11 && day < 2);
     }
 
     public static HalloweenSpecial getINSTANCE() {

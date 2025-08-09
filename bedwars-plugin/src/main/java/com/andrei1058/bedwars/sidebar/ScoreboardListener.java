@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.sidebar;
 
 import com.andrei1058.bedwars.BedWars;

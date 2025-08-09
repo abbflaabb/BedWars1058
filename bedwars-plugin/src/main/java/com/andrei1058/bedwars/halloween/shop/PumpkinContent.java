@@ -9,6 +9,9 @@ import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.shop.ShopCache;
 import com.andrei1058.bedwars.shop.main.CategoryContent;
 import com.andrei1058.bedwars.shop.main.ShopCategory;
+import com.andrei1058.bedwars.api.language.Language;
+
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,9 +32,9 @@ public class PumpkinContent extends CategoryContent {
         super(null, null, null, null, father);
 
         int foundSlot = -1;
-        for (int i = 19; i < 26; i++){
+        for (int i = 19; i < 26; i++) {
             int finalI = i;
-            if (father.getCategoryContentList().stream().noneMatch(categoryContent -> categoryContent.getSlot() == finalI)){
+            if (father.getCategoryContentList().stream().noneMatch(categoryContent -> categoryContent.getSlot() == finalI)) {
                 foundSlot = i;
                 break;
             }
@@ -97,7 +100,7 @@ public class PumpkinContent extends CategoryContent {
 
         pumpkin.setAmount(12);
         ItemMeta itemMeta = pumpkin.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Happy Halloween!");
+        itemMeta.setDisplayName(Language.getMsg(player, Messages.HALLOWEEN_ITEM_NAME));
         itemMeta.setLore(Arrays.asList("", cColor + String.valueOf(tier.getPrice()) + " " + cColor + translatedCurrency, " ", buyStatus));
         pumpkin.setItemMeta(itemMeta);
         return pumpkin;

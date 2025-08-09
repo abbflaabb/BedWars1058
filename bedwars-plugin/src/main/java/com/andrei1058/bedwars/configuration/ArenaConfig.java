@@ -8,6 +8,7 @@ import com.andrei1058.bedwars.api.configuration.GameMainOverridable;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import com.andrei1058.bedwars.api.arena.generator.GeneratorSpeed;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class ArenaConfig extends ConfigManager {
         yml.addDefault(ConfigPath.ARENA_DISPLAY_NAME, "");
         yml.addDefault("minPlayers", 2);
         yml.addDefault("maxInTeam", 1);
+        yml.addDefault("generatorSpeed", GeneratorSpeed.NORMAL.toString());
         yml.addDefault("allowSpectate", true);
         yml.addDefault(ConfigPath.ARENA_SPAWN_PROTECTION, 5);
         yml.addDefault(ConfigPath.ARENA_SHOP_PROTECTION, 1);
@@ -121,4 +123,5 @@ public class ArenaConfig extends ConfigManager {
         Object value = getGameOverridableValue(path);
         return value instanceof String ? (String) value : "invalid";
     }
+
 }

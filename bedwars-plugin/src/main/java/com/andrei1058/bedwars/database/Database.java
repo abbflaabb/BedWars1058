@@ -2,7 +2,7 @@
 package com.andrei1058.bedwars.database;
 
 import com.andrei1058.bedwars.shop.quickbuy.QuickBuyElement;
-import com.andrei1058.bedwars.stats.PlayerStats;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +23,9 @@ public interface Database {
     /**
      * Create or replace stats for a player.
      */
-    void saveStats(PlayerStats stats);
+    void saveStats(IPlayerStats stats);
 
-    PlayerStats fetchStats(UUID uuid);
+    IPlayerStats fetchStats(UUID uuid);
 
     /**
      * Set quick buy slot value.

@@ -6,6 +6,7 @@ import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.api.arena.team.ITeam;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 import com.andrei1058.bedwars.arena.Arena;
 import com.andrei1058.bedwars.commands.shout.ShoutCommand;
 import com.andrei1058.bedwars.stats.PlayerStats;
@@ -86,7 +87,7 @@ public class PAPISupport extends PlaceholderExpansion {
 
         // Stats placeholders
         if (s.startsWith("stats_")) {
-            PlayerStats stats = BedWars.getStatsManager().getUnsafe(player.getUniqueId());
+            IPlayerStats stats = BedWars.getStatsManager().getUnsafe(player.getUniqueId());
             if (stats == null) return null;
 
             switch (s.replace("stats_", "")) {

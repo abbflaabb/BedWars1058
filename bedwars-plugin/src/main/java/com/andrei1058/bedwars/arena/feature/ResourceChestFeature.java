@@ -11,6 +11,7 @@ import com.andrei1058.bedwars.api.hologram.IHologram;
 import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.arena.Arena;
+import com.andrei1058.bedwars.configuration.Sounds;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -41,6 +42,14 @@ public class ResourceChestFeature implements Listener {
                 .map(Material::valueOf)
                 .collect(Collectors.toSet());
         Bukkit.getPluginManager().registerEvents(this, BedWars.plugin);
+
+        // Add the chest open sound
+        try {
+            Sounds.addDefSound("ChestOpen", BedWars.getForCurrentVersion("CHEST_OPEN", "BLOCK_CHEST_OPEN", "BLOCK_CHEST_OPEN"));
+        } catch (Exception e) {
+            // If addDefSound doesn't work, the sound should be configured in sounds.yml
+            BedWars.plugin.getLogger().info("Using default sound configuration for ChestOpen");
+        }
     }
 
     public static void init() {
@@ -148,7 +157,7 @@ public class ResourceChestFeature implements Listener {
                 .replace("{chest}", chestType);
 
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', raw));
-        player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1.0f, 1.0f);
+        Sounds.playSound("ChestOpen", player);
         callEvent(player, arena, hand.clone(), inventory, isEnderChest);
     }
 

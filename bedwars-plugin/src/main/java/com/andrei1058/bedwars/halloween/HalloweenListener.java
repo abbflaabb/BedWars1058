@@ -11,6 +11,8 @@ import com.andrei1058.bedwars.api.events.player.PlayerXpGainEvent;
 import com.andrei1058.bedwars.api.events.server.ArenaDisableEvent;
 import com.andrei1058.bedwars.api.events.server.ArenaEnableEvent;
 import com.andrei1058.bedwars.api.events.server.ArenaRestartEvent;
+import com.andrei1058.bedwars.api.language.Language;
+import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.arena.Misc;
 import com.andrei1058.bedwars.levels.internal.PlayerLevel;
 import org.bukkit.*;
@@ -46,11 +48,8 @@ public class HalloweenListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onWorldLoad(WorldLoadEvent e) {
         // check if it is time to disable this special
-        if (HalloweenSpecial.getINSTANCE() != null) {
-            if (!HalloweenSpecial.checkAvailabilityDate()) {
-                CreatureSpawnEvent.getHandlerList().unregister(this);
-            }
-        }
+        if (!HalloweenSpecial.checkAvailabilityDate())
+            CreatureSpawnEvent.getHandlerList().unregister(this);
     }
 
     @EventHandler
@@ -65,7 +64,8 @@ public class HalloweenListener implements Listener {
                     location.getBlock().setMetadata("give-bw-exp", new FixedMetadataValue(BedWars.plugin, "ok"));
                     CobWebRemover remover = CobWebRemover.getByArena(e.getArena());
                     if (remover != null) {
-                        remover.addCobWeb(location.getBlock());
+                        if (remover != null)
+                            remover.addCobWeb(location.getBlock());
                     }
                 }
             }
@@ -80,7 +80,7 @@ public class HalloweenListener implements Listener {
             if (level != null) {
                 e.getBlock().getDrops().clear();
                 level.addXp(5, PlayerXpGainEvent.XpSource.OTHER);
-                e.getPlayer().sendMessage(ChatColor.GOLD + "+5 xp!");
+                e.getPlayer().sendMessage(Language.getMsg(e.getPlayer(), Messages.XP_REWARD_HALLOWEEN));
             }
         }
     }
@@ -88,7 +88,8 @@ public class HalloweenListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinArenaEvent e) {
         if (!e.isSpectator()) {
-            Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), ambienceSound, 3f, 1f), 20L);
+            if (!e.isSpectator())
+                Bukkit.getScheduler().runTaskLater(BedWars.plugin, () -> e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), ambienceSound, 3f, 1f), 20L);
         }
     }
 
@@ -97,7 +98,8 @@ public class HalloweenListener implements Listener {
         if (e.getNewState() == GameState.restarting) {
             CobWebRemover remover = CobWebRemover.getByArena(e.getArena());
             if (remover != null) {
-                remover.destroy();
+                if (remover != null)
+                    remover.destroy();
             }
         }
     }
@@ -106,7 +108,8 @@ public class HalloweenListener implements Listener {
     public void onRestart(ArenaRestartEvent e) {
         CobWebRemover remover = CobWebRemover.getByArenaWorld(e.getWorldName());
         if (remover != null) {
-            remover.destroy();
+            if (remover != null)
+                remover.destroy();
         }
     }
 
@@ -114,12 +117,13 @@ public class HalloweenListener implements Listener {
     public void onDisable(ArenaDisableEvent e) {
         CobWebRemover remover = CobWebRemover.getByArenaWorld(e.getWorldName());
         if (remover != null) {
-            remover.destroy();
+            if (remover != null)
+                remover.destroy();
         }
     }
 
     @EventHandler
-    public void onEnable(ArenaEnableEvent e){
+    public void onEnable(ArenaEnableEvent e) {
         new CobWebRemover(e.getArena());
     }
 }

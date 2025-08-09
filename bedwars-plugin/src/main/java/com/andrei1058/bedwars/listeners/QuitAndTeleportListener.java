@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.listeners;
 
 import com.andrei1058.bedwars.BedWars;

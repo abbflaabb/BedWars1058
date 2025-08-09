@@ -4,6 +4,7 @@ package com.andrei1058.bedwars.database;
 
 import com.andrei1058.bedwars.BedWars;
 import com.andrei1058.bedwars.api.language.Language;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 import com.andrei1058.bedwars.shop.quickbuy.QuickBuyElement;
 import com.andrei1058.bedwars.stats.PlayerStats;
 
@@ -105,7 +106,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void saveStats(PlayerStats stats) {
+    public void saveStats(IPlayerStats stats) {
         String sql;
         try {
             checkConnection();
@@ -150,8 +151,8 @@ public class SQLite implements Database {
     }
 
     @Override
-    public PlayerStats fetchStats(UUID uuid) {
-        PlayerStats stats = new PlayerStats(uuid);
+    public IPlayerStats fetchStats(UUID uuid) {
+        IPlayerStats stats = new PlayerStats(uuid);
         String sql = "SELECT * FROM global_stats WHERE uuid = ?;";
         try {
             checkConnection();

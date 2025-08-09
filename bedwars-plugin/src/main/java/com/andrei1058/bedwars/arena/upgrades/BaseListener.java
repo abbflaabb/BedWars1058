@@ -117,10 +117,12 @@ public class BaseListener implements Listener {
             }
         } else {
             // Trigger trap
-            if (!team.getActiveTraps().isEmpty()) {
-                if (!team.isBedDestroyed()) {
-                    team.getActiveTraps().get(0).trigger(team, e.getPlayer());
-                    team.getActiveTraps().remove(0);
+            if (!Arena.magicMilk.containsKey(e.getPlayer().getUniqueId())) {
+                if (!team.getActiveTraps().isEmpty()) {
+                    if (!team.isBedDestroyed()) {
+                        team.getActiveTraps().get(0).trigger(team, e.getPlayer());
+                        team.getActiveTraps().remove(0);
+                    }
                 }
             }
         }

@@ -86,6 +86,11 @@ public class Messages {
     public static String COMMAND_TP_USAGE = "cmd-tp-usage";
     public static String REJOIN_NO_ARENA = "cmd-rejoin-no-arena";
     public static String REJOIN_DENIED = "cmd-rejoin-denied";
+    public static String XP_REWARD_HALLOWEEN = "xp-reward-halloween";
+
+    public static String HALLOWEEN_ITEM_NAME = "halloween-item-name";
+
+
     public static String REJOIN_ALLOWED = "cmd-rejoin-allowed";
     public static String COMMAND_REJOIN_PLAYER_RECONNECTED = "cmd-rejoin-player-reconnected";
     public static String COMMAND_LEAVE_MSG = "cmd-leave";

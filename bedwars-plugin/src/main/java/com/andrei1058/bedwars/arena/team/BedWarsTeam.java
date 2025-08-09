@@ -18,6 +18,7 @@ import com.andrei1058.bedwars.api.upgrades.EnemyBaseEnterTrap;
 import com.andrei1058.bedwars.arena.Arena;
 import com.andrei1058.bedwars.arena.OreGenerator;
 import com.andrei1058.bedwars.configuration.Sounds;
+import com.andrei1058.bedwars.api.arena.generator.GeneratorSpeed;
 import com.andrei1058.bedwars.shop.ShopCache;
 import com.andrei1058.bedwars.support.paper.TeleportManager;
 import org.bukkit.*;
@@ -52,7 +53,7 @@ public class BedWarsTeam implements ITeam {
     private Arena arena;
     private boolean bedDestroyed = false;
     private Vector killDropsLoc = null;
-
+    private static final int RESPAWN_UPDATE_RATE = 4;
     // team generators
     private List<IGenerator> generators = new ArrayList<>();
 
@@ -308,8 +309,8 @@ public class BedWarsTeam implements ITeam {
                 locs = getArena().getConfig().getArenaLocations("Team." + getName() + "." + type);
             }
             for (Location loc : locs) {
-                IGenerator gen = new OreGenerator(loc, getArena(), gt, this);
-                //getArena().getOreGenerators().add(gen);
+                IGenerator gen = new OreGenerator(loc, getArena(), gt, this,
+                        GeneratorSpeed.valueOf(getArena().getConfig().getYml().get("generatorSpeed").toString().toUpperCase()));                //getArena().getOreGenerators().add(gen);
                 generators.add(gen);
             }
         }

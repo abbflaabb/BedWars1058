@@ -55,6 +55,7 @@ public class Sounds {
         addDefSound("join-denied", BedWars.getForCurrentVersion("VILLAGER_NO", "ENTITY_VILLAGER_NO", "ENTITY_VILLAGER_NO"));
         addDefSound("join-allowed", BedWars.getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP"));
         addDefSound("spectator-gui-click", BedWars.getForCurrentVersion("SLIME_WALK", "ENTITY_SLIME_JUMP", "ENTITY_SLIME_JUMP"));
+        addDefSound("ChestOpen", BedWars.getForCurrentVersion("CHEST_OPEN", "BLOCK_CHEST_OPEN", "BLOCK_CHEST_OPEN"));
         addDefSound(SOUNDS_COUNTDOWN_TICK, BedWars.getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG"));
         addDefSound(SOUNDS_COUNTDOWN_TICK_X + "5", BedWars.getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG"));
         addDefSound(SOUNDS_COUNTDOWN_TICK_X + "4", BedWars.getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG"));
@@ -133,7 +134,7 @@ public class Sounds {
         return sounds;
     }
 
-    private static void addDefSound(String path, String value) {
+    public static void addDefSound(String path, String value) {
         // convert old paths
         if (getSounds().getYml().get(path) != null && getSounds().getYml().get(path + ".volume") == null) {
             String temp = getSounds().getYml().getString(path);
@@ -148,5 +149,20 @@ public class Sounds {
     public static  void playsoundArea(String path, Location location, float x, float y){
         final Sound sound = getSound(path);
         if (sound != null) location.getWorld().playSound(location, sound, x, y);
+    }
+    public static void playFlyEnabled(Player player) {
+        playSound("FlyEnabled", player);
+    }
+
+    public static void playFlyDisabled(Player player) {
+        playSound("FlyDisabled", player);
+    }
+
+    public static void playFlyAdminAction(Player player) {
+        playSound("FlyAdminAction", player);
+    }
+
+    public static void playFlySpeedChange(Player player) {
+        playSound("FlySpeedChange", player);
     }
 }

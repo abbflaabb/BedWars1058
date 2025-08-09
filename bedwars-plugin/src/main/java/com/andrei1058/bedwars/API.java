@@ -14,6 +14,7 @@ import com.andrei1058.bedwars.api.server.RestoreAdapter;
 import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.server.VersionSupport;
 import com.andrei1058.bedwars.api.sidebar.ISidebarService;
+import com.andrei1058.bedwars.api.stats.IStatsManager;
 import com.andrei1058.bedwars.arena.Arena;
 import com.andrei1058.bedwars.arena.SetupSession;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
@@ -205,7 +206,11 @@ public class API implements com.andrei1058.bedwars.api.BedWars {
             return UpgradesManager.getConfiguration();
         }
     };
-
+    @SuppressWarnings("unused")
+    @Override
+    public IStatsManager getStatsManager() {
+        return BedWars.getStatsManager();
+    }
     private final ShopUtil shopUtil = new ShopUtil() {
         @Override
         public int calculateMoney(Player player, Material currency) {

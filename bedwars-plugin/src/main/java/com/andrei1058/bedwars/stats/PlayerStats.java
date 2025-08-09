@@ -1,10 +1,11 @@
-
 package com.andrei1058.bedwars.stats;
+
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public class PlayerStats {
+public class PlayerStats implements IPlayerStats {
 
     private final UUID uuid;
 

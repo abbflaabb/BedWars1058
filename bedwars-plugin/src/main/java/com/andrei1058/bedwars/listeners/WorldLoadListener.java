@@ -1,8 +1,7 @@
-
 package com.andrei1058.bedwars.listeners;
 
-import com.andrei1058.bedwars.api.arena.IArena;
 import com.andrei1058.bedwars.arena.Arena;
+import com.andrei1058.bedwars.api.arena.IArena;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;

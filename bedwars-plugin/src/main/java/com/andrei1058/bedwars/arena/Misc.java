@@ -12,6 +12,7 @@ import com.andrei1058.bedwars.api.exceptions.InvalidMaterialException;
 import com.andrei1058.bedwars.api.language.Messages;
 import com.andrei1058.bedwars.api.region.Region;
 import com.andrei1058.bedwars.api.server.ServerType;
+import com.andrei1058.bedwars.api.stats.IPlayerStats;
 import com.andrei1058.bedwars.configuration.Sounds;
 import com.andrei1058.bedwars.stats.PlayerStats;
 import com.andrei1058.bedwars.support.papi.SupportPAPI;
@@ -303,7 +304,7 @@ public class Misc {
     }
 
     public static String replaceStatsPlaceholders(Player player, @NotNull String s, boolean papiReplacements) {
-        PlayerStats stats = BedWars.getStatsManager().get(player.getUniqueId());
+        IPlayerStats stats = BedWars.getStatsManager().get(player.getUniqueId());
 
         if (s.contains("{kills}"))
             s = s.replace("{kills}", String.valueOf(stats.getKills()));

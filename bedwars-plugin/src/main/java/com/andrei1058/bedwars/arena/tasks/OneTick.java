@@ -1,6 +1,7 @@
 
 package com.andrei1058.bedwars.arena.tasks;
 
+
 import com.andrei1058.bedwars.api.arena.generator.IGenerator;
 import com.andrei1058.bedwars.arena.OreGenerator;
 

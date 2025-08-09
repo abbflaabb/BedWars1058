@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.shop.main;
 
 import com.andrei1058.bedwars.BedWars;
@@ -242,8 +241,6 @@ public class BuyItem implements IBuyItem {
                 }
             }
         }
-        //
-        player.getInventory().addItem(i);
         player.updateInventory();
     }
 

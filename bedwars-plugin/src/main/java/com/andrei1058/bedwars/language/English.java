@@ -121,6 +121,8 @@ public class English extends Language {
                 "&bNeed help? Use &e/help &bfor a list of commands."
         ));
 
+        yml.addDefault(Messages.XP_REWARD_HALLOWEEN, "{prefix}&6+5 BedWars Experience Received (Halloween).");
+        yml.addDefault(Messages.HALLOWEEN_ITEM_NAME, "&6&lHappy Halloween");
 
 
         yml.addDefault(Messages.FLY_CONSOLE_ONLY, "&cThis command can only be used by players!");

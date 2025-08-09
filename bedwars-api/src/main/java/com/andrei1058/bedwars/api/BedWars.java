@@ -33,6 +33,7 @@ import com.andrei1058.bedwars.api.server.RestoreAdapter;
 import com.andrei1058.bedwars.api.server.ServerType;
 import com.andrei1058.bedwars.api.server.VersionSupport;
 import com.andrei1058.bedwars.api.sidebar.ISidebarService;
+import com.andrei1058.bedwars.api.stats.IStatsManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -124,6 +125,8 @@ public interface BedWars {
 
     }
 
+    @Deprecated
+    IStatsManager getStatsManager();
 
     /**
      * Get afk system methods. It will only work if the game is started.
