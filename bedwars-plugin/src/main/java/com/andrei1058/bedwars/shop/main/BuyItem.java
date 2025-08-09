@@ -241,6 +241,8 @@ public class BuyItem implements IBuyItem {
                 }
             }
         }
+        //
+        player.getInventory().addItem(i);
         player.updateInventory();
     }
 
