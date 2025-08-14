@@ -4,5 +4,11 @@ version: ${project.version}
 author: andrei1058
 description: BedWars minigame by andrei1058
 main: com.andrei1058.bedwars.BedWars
+
+website: www.Aquiqmc.xyz
+
+
+
+
 softdepend: [Vault,PlaceholderAPI,Citizens,Parties,SlimeWorldManager,VipFeatures,Enhanced-SlimeWorldManager,PartyAndFriends,Spigot-Party-API-PAF,DecentHolograms]
 #load: STARTUP

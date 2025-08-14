@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 import static com.andrei1058.bedwars.api.language.Language.getMsg;
 
 public class PAPISupport extends PlaceholderExpansion {
+    public DecimalFormat df = new DecimalFormat("#.##");
 
     public static String formatText(Player player, IArena arena, ITeam team, String text) {
         return text;
@@ -106,6 +108,24 @@ public class PAPISupport extends PlaceholderExpansion {
                 case "finaldeaths": return String.valueOf(stats.getFinalDeaths());
                 case "bedsdestroyed": return String.valueOf(stats.getBedsDestroyed());
                 case "gamesplayed": return String.valueOf(stats.getGamesPlayed());
+                case "kdr": {
+                    if (stats.getDeaths() == 0 && stats.getKills() == 0) {
+                        return "N/D";
+                    }
+                    return String.valueOf(df.format((double) stats.getKills() / stats.getDeaths()));
+                }
+                case "fkdr": {
+                    if (stats.getFinalDeaths() == 0 && stats.getFinalKills() == 0) {
+                        return "N/D";
+                    }
+                    return String.valueOf(df.format((double) stats.getFinalKills() / stats.getFinalDeaths()));
+                }
+                case "wlr": {
+                    if (stats.getWins() == 0 && stats.getLosses() == 0) {
+                        return "N/D";
+                    }
+                    return String.valueOf(df.format((double) stats.getWins() / stats.getLosses()));
+                }
             }
         }
 

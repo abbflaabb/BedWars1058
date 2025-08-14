@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.support.vipfeatures;
 
 import com.andrei1058.bedwars.BedWars;
@@ -35,22 +34,22 @@ public class VipListeners implements Listener {
     }
 
     @EventHandler
-    public void onBockChange(BlockChangeEvent e) {
-        if (BedWars.getAPI().getArenaUtil().getArenaByName(e.getLocation().getWorld().getName()) != null) {
-            IArena a = BedWars.getAPI().getArenaUtil().getArenaByName(e.getLocation().getWorld().getName());
-            for (ITeam t : a.getTeams()) {
+    public void onBlockChange(BlockChangeEvent e) {
+        IArena arena = BedWars.getAPI().getArenaUtil().getArenaByName(e.getLocation().getWorld().getName());
+        if (arena != null) {
+            for (ITeam team : arena.getTeams()) {
                 for (int x = -1; x < 2; x++) {
                     for (int z = -1; z < 2; z++) {
-                        if (e.getLocation().getBlockX() == t.getBed().getBlockX() &&
-                                e.getLocation().getBlockY() == t.getBed().getBlockY() &&
-                                e.getLocation().getBlockZ() == t.getBed().getBlockZ()) {
-                            if (BedWars.nms.isBed(t.getBed().clone().add(x, 0, z).getBlock().getType())) e.setCancelled(true);
+                        if (e.getLocation().getBlockX() == team.getBed().getBlockX() &&
+                                e.getLocation().getBlockY() == team.getBed().getBlockY() &&
+                                e.getLocation().getBlockZ() == team.getBed().getBlockZ()) {
+                            if (BedWars.nms.isBed(team.getBed().clone().add(x, 0, z).getBlock().getType())) e.setCancelled(true);
                             return;
                         }
                     }
                 }
             }
-            a.getPlaced().add(new Vector(e.getLocation().getBlockX(), e.getLocation().getBlockY(),e.getLocation().getBlockZ()));
+            arena.getPlaced().add(new Vector(e.getLocation().getBlockX(), e.getLocation().getBlockY(),e.getLocation().getBlockZ()));
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.andrei1058.bedwars;
 
 import com.andrei1058.bedwars.api.arena.IArena;
+import com.andrei1058.bedwars.api.arena.generator.IGenerator;
 import com.andrei1058.bedwars.api.configuration.ConfigManager;
 import com.andrei1058.bedwars.api.configuration.ConfigPath;
 import com.andrei1058.bedwars.api.hologram.IHologramManager;
@@ -8,6 +9,7 @@ import com.andrei1058.bedwars.api.language.Language;
 import com.andrei1058.bedwars.api.levels.Level;
 import com.andrei1058.bedwars.api.party.Party;
 import com.andrei1058.bedwars.arena.Hologram.HologramManager;
+import com.andrei1058.bedwars.arena.feature.AntiDropFeature;
 import com.andrei1058.bedwars.arena.feature.ResourceChestFeature;
 import com.andrei1058.bedwars.api.server.RestoreAdapter;
 import com.andrei1058.bedwars.api.server.ServerType;
@@ -24,6 +26,12 @@ import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
 import com.andrei1058.bedwars.arena.upgrades.HealPoolListner;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.HelpCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.MapCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.SpectateCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.StartCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.SupportCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive.SetEventCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
 import com.andrei1058.bedwars.commands.party.PartyCommand;
 import com.andrei1058.bedwars.commands.rejoin.RejoinCommand;
@@ -88,8 +96,8 @@ import java.util.*;
 public class BedWars extends JavaPlugin {
 
     private static ServerType serverType = ServerType.MULTIARENA;
-    public static boolean debug = true, autoscale = false;
-    public static String mainCmd = "bw", link = "WWW.Aquix.egg.pl.support";
+    public static boolean debug = false, autoscale = false;
+    public static String mainCmd = "bw", link = "Hi im Abbas";
     public static ConfigManager signs, generators;
     public static MainConfig config;
     public static InvsibltyConfig InvsibltyConfig;
@@ -108,7 +116,7 @@ public class BedWars extends JavaPlugin {
     private static final String version = Bukkit.getServer().getClass().getName().split("\\.")[3];
     private static String lobbyWorld = "";
     private static boolean shuttingDown = false;
-
+    public IGenerator generator;
     public static ArenaManager arenaManager = new ArenaManager();
 
     //remote database
@@ -340,7 +348,7 @@ public class BedWars extends JavaPlugin {
 
         if (config.getBoolean(ConfigPath.GENERAL_CONFIGURATION_PERFORMANCE_ROTATE_GEN)) {
             //new OneTick().runTaskTimer(this, 120, 1);
-            Bukkit.getScheduler().runTaskTimer(this, new OneTick(), 120, 1);
+            Bukkit.getScheduler().runTaskTimer(this, new OneTick(generator), 120, 1);
         }
 
         /* Register NMS entities */
@@ -508,6 +516,8 @@ public class BedWars extends JavaPlugin {
             ResourceChestFeature.init();
         // TNT Spoil Feature
         SpoilPlayerTNTFeature.init();
+        AntiDropFeature.init();
+
 
         // Warn user if current server version support is deprecated
         this.performDeprecationCheck();
@@ -573,6 +583,27 @@ public class BedWars extends JavaPlugin {
         if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
             Bukkit.getLogger().info("Registering /party command..");
             nms.registerCommand("party", new PartyCommand("party"));
+        }
+        if (!nms.isBukkitCommandRegistered("start")) {
+            nms.registerCommand("start", new StartCommand("start"));
+        }
+        if (!nms.isBukkitCommandRegistered("help")) {
+            nms.registerCommand("help", new HelpCommand("help"));
+        }
+        if (!nms.isBukkitCommandRegistered("Support")) {
+            nms.registerCommand("Support", new SupportCommand("Support"));
+        }
+        if (!nms.isBukkitCommandRegistered("setEvent")) {
+            nms.registerCommand("setEvent", new SetEventCommand("setEvent"));
+        }
+        if (!nms.isBukkitCommandRegistered("Spectator")) {
+            nms.registerCommand("Spectator", new SpectateCommand("Spectator"));
+        }
+        if (!nms.isBukkitCommandRegistered("Sp")) {
+            nms.registerCommand("Sp", new SpectateCommand("Sp"));
+        }
+        if (!nms.isBukkitCommandRegistered("Map")) {
+            nms.registerCommand("Map", new com.andrei1058.bedwars.commands.bedwars.subcmds.General.MapCommand("Map"));
         }
     }
 

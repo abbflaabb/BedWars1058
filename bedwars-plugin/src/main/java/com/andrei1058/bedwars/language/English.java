@@ -123,7 +123,8 @@ public class English extends Language {
 
         yml.addDefault(Messages.XP_REWARD_HALLOWEEN, "{prefix}&6+5 BedWars Experience Received (Halloween).");
         yml.addDefault(Messages.HALLOWEEN_ITEM_NAME, "&6&lHappy Halloween");
-
+        yml.addDefault(Messages.Help_Command_No_Perms, "§cYou do not have permission to use this command.");
+        yml.addDefault(Messages.COMMAND_SPECTATE_NO_PERMISSION, "{prefix}&cYou do not have permission to use this command.");
 
         yml.addDefault(Messages.FLY_CONSOLE_ONLY, "&cThis command can only be used by players!");
         yml.addDefault(Messages.FLY_PLAYER_NOT_FOUND, "&cPlayer not found or not online!");
@@ -175,7 +176,7 @@ public class English extends Language {
         yml.addDefault(Messages.BED_STATUS_UNKNOWN, "&7Bed: Unknown");
         yml.addDefault(Messages.BED_STATUS_DESTROYED, "&cBed: Destroyed");
         yml.addDefault(Messages.BED_STATUS_ALIVE, "&aBed: Alive");
-        yml.addDefault(Messages.FLY_ONLY_VIP, "{prefix}&4You must be a &a&lpremium &4to use this command.");
+        yml.addDefault(Messages.FLY_ONLY_VIP, "{prefix}&4You must be a &a&lS+ &4to use this command.");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_USAGE, "{prefix}&eUsage: &7/party invite <player>");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_DENIED_PLAYER_OFFLINE, "{prefix}&7{player} &eis not online!");
         yml.addDefault(Messages.COMMAND_PARTY_INVITE_SENT, "{prefix}&eInvite sent to &7{player}&6.");

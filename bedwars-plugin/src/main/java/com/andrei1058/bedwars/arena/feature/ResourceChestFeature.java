@@ -33,15 +33,25 @@ public class ResourceChestFeature implements Listener {
     private final Set<Material> blocked;
     private final Map<IArena, List<IHologram>> holoMap = new HashMap<>();
     private final Map<IArena, Map<Location, ITeam>> chestOwnership = new HashMap<>();
+    private static final Map<String, String> LEGACY_MATERIALS = new HashMap<>();
+    static {
+        LEGACY_MATERIALS.put("WOODEN_SWORD", "WOOD_SWORD");
+        LEGACY_MATERIALS.put("WOODEN_PICKAXE", "WOOD_PICKAXE");
+        LEGACY_MATERIALS.put("WOODEN_AXE", "WOOD_AXE");
+        LEGACY_MATERIALS.put("WOODEN_SHOVEL", "WOOD_SPADE"); // in 1.12, shovel was SPADE
+        LEGACY_MATERIALS.put("WOODEN_HOE", "WOOD_HOE");
+    }
 
     private ResourceChestFeature() {
         this.blocked = BedWars.config.getYml()
                 .getStringList(ConfigPath.GENERAL_CONFIGURATION_RESOURCE_CHEST_BLOCKED)
                 .stream()
                 .map(String::toUpperCase)
+                .map(name -> LEGACY_MATERIALS.getOrDefault(name, name))  // Map 1.13+ names to 1.12 names
                 .map(Material::valueOf)
                 .collect(Collectors.toSet());
         Bukkit.getPluginManager().registerEvents(this, BedWars.plugin);
+
 
         // Add the chest open sound
         try {

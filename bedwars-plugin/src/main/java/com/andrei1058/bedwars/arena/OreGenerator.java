@@ -268,6 +268,7 @@ public class OreGenerator implements IGenerator {
             nms.hideEntity(tier, p);
             nms.hideEntity(timer, p);
             nms.hideEntity(name, p);
+
         }
 
         @Override

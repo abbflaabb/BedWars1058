@@ -44,7 +44,7 @@ public class Messages {
     public static String NEXT_EVENT_SUBTITLE_ANNOUNCE_SUDDEN_DEATH = "next-event-sudden-death-sub-title";
     public static String NEXT_EVENT_CHAT_ANNOUNCE_SUDDEN_DEATH = "next-event-sudden-death-chat";
     public static String ARENA_IN_GAME_ANNOUNCEMENT = "in-game-announcement";
-
+    public static String Help_Command_No_Perms = "help-command-No_Perms";
     /**
      * General commands reply
      */
@@ -126,6 +126,10 @@ public class Messages {
     public static String COMMAND_FORCESTART_NO_PERM = "cmd-start-no-perm";
     public static String COMMAND_COOLDOWN = "cmd-cooldown";
     public static final String FLY_ONLY_VIP = "fly-only-vip";
+    public static String COMMAND_SPECTATE_NOT_IN_ARENA = "cmd-spectate-not-in-arena";
+    public static String COMMAND_SPECTATE_ALREADY_SPECTATOR = "cmd-spectate-already-spectator";
+    public static String COMMAND_SPECTATE_SUCCESS = "cmd-spectate-success";
+    public static String COMMAND_SPECTATE_NO_PERMISSION = "cmd-spectate-no-permission";
 
     public static final String BED_STATUS_UNKNOWN = "bed-status-unknown";
     public static final String BED_STATUS_DESTROYED = "bed-status-destroyed";

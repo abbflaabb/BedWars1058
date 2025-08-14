@@ -29,9 +29,9 @@ public class JoinNPC {
     private static boolean citizensSupport = false;
 
     /* Here are stored NPC holograms without colors and placeholders translated used for refresh*/
-    public static HashMap<ArmorStand, List<String>> npcs_holos = new HashMap<>();
+    public static final Map<ArmorStand, List<String>> npcsHolograms = new HashMap<>();
     /* Here are stored all the NPCs*/
-    public static HashMap<Integer, String> npcs = new HashMap<>();
+    public static final Map<Integer, String> npcs = new HashMap<>();
 
 
     /**
@@ -74,51 +74,49 @@ public class JoinNPC {
      * Spawn a join-NPC
      *
      * @param group Arena Group
-     * @param l     Location where to be spawned
-     * @param name  Display name
+     * @param location     Location where to be spawned
+     * @param displayName  Display name
      * @param skin  A player name to get his skin
      */
     @Nullable
-    public static NPC spawnNPC(Location l, String name, String group, String skin, NPC spawnExisting) {
+    public static NPC spawnNPC(Location location, String displayName, String group, String skin, NPC existingNPC) {
         if (!isCitizensSupport()) return null;
-        NPC npc;
-        if (spawnExisting == null) {
-            npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "");
-        } else {
-            npc = spawnExisting;
-        }
+        NPC npc = (existingNPC == null)
+                ? CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, "")
+                : existingNPC;
         if (!npc.isSpawned()) {
-            npc.spawn(l);
+            npc.spawn(location);
         }
-        if (npc.getEntity() instanceof SkinnableEntity) ((SkinnableEntity) npc.getEntity()).setSkinName(skin);
+        if (npc.getEntity() instanceof SkinnableEntity) {
+            ((SkinnableEntity) npc.getEntity()).setSkinName(skin);
+        }
         npc.setProtected(true);
         npc.setName("");
-        String separator = "\\\\n";
-        String[] nume = name.split(separator);
-        for (Entity e : l.getWorld().getNearbyEntities(l, 1, 3, 1)) {
-            if (e.getType() == EntityType.ARMOR_STAND) e.remove();
+        String[] lines = displayName.split("\\\\n");
+        // Remove nearby armor stands
+        for (Entity entity : location.getWorld().getNearbyEntities(location, 1, 3, 1)) {
+            if (entity.getType() == EntityType.ARMOR_STAND) entity.remove();
         }
-        if (nume.length >= 2) {
-            ArmorStand a = createArmorStand(l.clone().add(0, 0.05, 0));
-            a.setMarker(false);
-            a.setCustomNameVisible(true);
-            a.setCustomName(ChatColor.translateAlternateColorCodes('&', nume[0]).replace("{players}", String.valueOf(Arena.getPlayers(group))));
-            npcs.put(npc.getId(), group);
-            ArmorStand a2 = createArmorStand(l.clone().subtract(0, 0.25, 0));
-            a2.setMarker(false);
-            a2.setCustomName(ChatColor.translateAlternateColorCodes('&', nume[1].replace("{players}", String.valueOf(Arena.getPlayers(group)))));
-            a2.setCustomNameVisible(true);
-            npcs_holos.put(a, Arrays.asList(group, nume[0]));
-            npcs_holos.put(a2, Arrays.asList(group, nume[1]));
-        } else if (nume.length == 1) {
-            npcs.put(npc.getId(), group);
-            ArmorStand a2 = createArmorStand(l.clone().subtract(0, 0.25, 0));
-            a2.setMarker(false);
-            a2.setCustomName(ChatColor.translateAlternateColorCodes('&', nume[0]).replace("{players}", String.valueOf(Arena.getPlayers(group))));
-            a2.setCustomNameVisible(true);
-            npcs_holos.put(a2, Arrays.asList(group, nume[0]));
+        npcs.put(npc.getId(), group);
+        if (lines.length >= 2) {
+            ArmorStand line1 = createArmorStand(location.clone().add(0, 0.05, 0));
+            line1.setMarker(false);
+            line1.setCustomNameVisible(true);
+            line1.setCustomName(ChatColor.translateAlternateColorCodes('&', lines[0]).replace("{players}", String.valueOf(Arena.getPlayers(group))));
+            ArmorStand line2 = createArmorStand(location.clone().subtract(0, 0.25, 0));
+            line2.setMarker(false);
+            line2.setCustomName(ChatColor.translateAlternateColorCodes('&', lines[1].replace("{players}", String.valueOf(Arena.getPlayers(group)))));
+            line2.setCustomNameVisible(true);
+            npcsHolograms.put(line1, Arrays.asList(group, lines[0]));
+            npcsHolograms.put(line2, Arrays.asList(group, lines[1]));
+        } else if (lines.length == 1) {
+            ArmorStand line = createArmorStand(location.clone().subtract(0, 0.25, 0));
+            line.setMarker(false);
+            line.setCustomName(ChatColor.translateAlternateColorCodes('&', lines[0]).replace("{players}", String.valueOf(Arena.getPlayers(group))));
+            line.setCustomNameVisible(true);
+            npcsHolograms.put(line, Arrays.asList(group, lines[0]));
         }
-        npc.teleport(l, PlayerTeleportEvent.TeleportCause.PLUGIN);
+        npc.teleport(location, PlayerTeleportEvent.TeleportCause.PLUGIN);
         npc.setName("");
         return npc;
     }
@@ -128,32 +126,27 @@ public class JoinNPC {
      */
     public static void spawnNPCs() {
         if (!isCitizensSupport()) return;
-        if (BedWars.config.getYml().get(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE) != null) {
-            for (String s : BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE)) {
-                String[] data = s.split(",");
-                if (data.length < 10) continue;
-                if (!Misc.isNumber(data[0])) continue;
-                if (!Misc.isNumber(data[1])) continue;
-                if (!Misc.isNumber(data[2])) continue;
-                if (!Misc.isNumber(data[3])) continue;
-                if (!Misc.isNumber(data[4])) continue;
-                if (Misc.isNumber(data[5])) continue;
-                if (Misc.isNumber(data[6])) continue;
-                if (Misc.isNumber(data[7])) continue;
-                if (Misc.isNumber(data[8])) continue;
-                if (!Misc.isNumber(data[9])) continue;
-                Location l = new Location(Bukkit.getWorld(data[5]), Double.parseDouble(data[0]), Double.parseDouble(data[1]), Double.parseDouble(data[2]), Float.parseFloat(data[3]),
-                        Float.parseFloat(data[4]));
-                String skin = data[6], name = data[7], group = data[8];
-                int id = Integer.parseInt(data[9]);
-                net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().getById(id);
-                if (npc == null) {
-                    BedWars.plugin.getLogger().severe("Invalid npc id: " + id);
-                    continue;
-                }
-                spawnNPC(l, name, group, skin, npc);
+        List<String> npcLocs = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE);
+        if (npcLocs == null) return;
+        for (String s : npcLocs) {
+            String[] data = s.split(",");
+            if (data.length < 10) continue;
+            if (!Misc.isNumber(data[0]) || !Misc.isNumber(data[1]) || !Misc.isNumber(data[2]) ||
+                !Misc.isNumber(data[3]) || !Misc.isNumber(data[4]) || !Misc.isNumber(data[9])) continue;
+            Location location = new Location(Bukkit.getWorld(data[5]),
+                    Double.parseDouble(data[0]),
+                    Double.parseDouble(data[1]),
+                    Double.parseDouble(data[2]),
+                    Float.parseFloat(data[3]),
+                    Float.parseFloat(data[4]));
+            String skin = data[6], name = data[7], group = data[8];
+            int id = Integer.parseInt(data[9]);
+            NPC npc = CitizensAPI.getNPCRegistry().getById(id);
+            if (npc == null) {
+                BedWars.plugin.getLogger().severe("Invalid npc id: " + id);
+                continue;
             }
-
+            spawnNPC(location, name, group, skin, npc);
         }
     }
 
@@ -163,15 +156,14 @@ public class JoinNPC {
      * @param group arena group
      */
     public static void updateNPCs(String group) {
-        String x = String.valueOf(Arena.getPlayers(group));
-        for (Map.Entry<ArmorStand, List<String>> e : npcs_holos.entrySet()) {
-            if (e.getValue().get(0).equalsIgnoreCase(group)) {
-                if (e.getKey() != null) {
-                    if (!e.getKey().isDead()) {
-                        e.getKey().setCustomName(ChatColor.translateAlternateColorCodes('&', e.getValue().get(1).replace("{players}", x)));
-                    }
+        String playerCount = String.valueOf(Arena.getPlayers(group));
+        for (Map.Entry<ArmorStand, List<String>> entry : npcsHolograms.entrySet()) {
+            List<String> value = entry.getValue();
+            if (value.get(0).equalsIgnoreCase(group)) {
+                ArmorStand stand = entry.getKey();
+                if (stand != null && !stand.isDead()) {
+                    stand.setCustomName(ChatColor.translateAlternateColorCodes('&', value.get(1).replace("{players}", playerCount)));
                 }
-
             }
         }
     }

@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.support.citizens;
 
 import com.andrei1058.bedwars.BedWars;
@@ -23,49 +22,47 @@ import static com.andrei1058.bedwars.api.language.Language.getMsg;
 public class CitizensListener implements Listener {
 
     @EventHandler
-    public void removeNPC(NPCRemoveEvent e) {
-        if (e == null) return;
-        if (e.getNPC() == null) return;
-        if (e.getNPC().getEntity() == null) return;
+    public void removeNPC(NPCRemoveEvent event) {
+        if (event == null || event.getNPC() == null || event.getNPC().getEntity() == null) return;
         List<String> locations = BedWars.config.getYml().getStringList(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE);
         boolean removed = false;
-        if (JoinNPC.npcs.containsKey(e.getNPC().getId())) {
-            JoinNPC.npcs.remove(e.getNPC().getId());
+        int npcId = event.getNPC().getId();
+        if (JoinNPC.npcs.containsKey(npcId)) {
+            JoinNPC.npcs.remove(npcId);
             removed = true;
         }
         for (String s : new ArrayList<>(locations)) {
             String[] data = s.split(",");
-            if (data.length >= 10) {
-                if (Misc.isNumber(data[9])) {
-                    if (Integer.parseInt(data[9]) == e.getNPC().getId()) {
-                        locations.remove(s);
-                        removed = true;
-                    }
-                }
+            if (data.length >= 10 && Misc.isNumber(data[9]) && Integer.parseInt(data[9]) == npcId) {
+                locations.remove(s);
+                removed = true;
             }
         }
-        for (Entity e2 : e.getNPC().getEntity().getNearbyEntities(0, 3, 0)) {
-            if (e2.getType() == EntityType.ARMOR_STAND) {
-                e2.remove();
+        for (Entity entity : event.getNPC().getEntity().getNearbyEntities(0, 3, 0)) {
+            if (entity.getType() == EntityType.ARMOR_STAND && entity.hasMetadata("bw-npc")) {
+                entity.remove();
             }
         }
-        if (removed) BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE, locations);
+        if (removed) {
+            BedWars.config.set(ConfigPath.GENERAL_CONFIGURATION_NPC_LOC_STORAGE, locations);
+        }
     }
 
     @EventHandler
     // Citizens support
-    public void onNPCInteract(PlayerInteractEntityEvent e) {
+    public void onNPCInteract(PlayerInteractEntityEvent event) {
         if (!JoinNPC.isCitizensSupport()) return;
-        if (e.getPlayer().isSneaking()) return;
-        if (!e.getRightClicked().hasMetadata("NPC")) return;
-        net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().getNPC(e.getRightClicked());
+        if (event.getPlayer().isSneaking()) return;
+        if (!event.getRightClicked().hasMetadata("NPC")) return;
+        net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().getNPC(event.getRightClicked());
         if (npc == null) return;
-        if (JoinNPC.npcs.containsKey(npc.getId())) {
-            if (!Arena.joinRandomFromGroup(e.getPlayer(), JoinNPC.npcs.get(npc.getId()))) {
-                e.getPlayer().sendMessage(getMsg(e.getPlayer(), Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
-                Sounds.playSound("join-denied", e.getPlayer());
+        String groupId = JoinNPC.npcs.get(npc.getId());
+        if (groupId != null) {
+            if (!Arena.joinRandomFromGroup(event.getPlayer(), groupId)) {
+                event.getPlayer().sendMessage(getMsg(event.getPlayer(), Messages.COMMAND_JOIN_NO_EMPTY_FOUND));
+                Sounds.playSound("join-denied", event.getPlayer());
             } else {
-                Sounds.playSound("join-allowed", e.getPlayer());
+                Sounds.playSound("join-allowed", event.getPlayer());
             }
         }
     }

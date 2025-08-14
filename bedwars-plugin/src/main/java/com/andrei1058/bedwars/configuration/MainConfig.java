@@ -89,6 +89,8 @@ public class MainConfig extends ConfigManager {
         yml.addDefault(ConfigPath.FLY_COMMAND_ALLOW_IN_GAME, false);
         yml.addDefault(ConfigPath.FLY_COMMAND_MAX_DURATION, 300);
         yml.addDefault(ConfigPath.FLY_COMMAND_ENABLE_SOUNDS, true);
+        yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ENABLE_ANTI_DROP, true);
+
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_WAITING, false);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_HUNGER_INGAME, false);
@@ -149,15 +151,15 @@ public class MainConfig extends ConfigManager {
         /* Multi-Arena Lobby Command Items */
         saveLobbyCommandItem("stats", "bw stats", false, getForCurrentVersion("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD"), 3, 0);
         saveLobbyCommandItem("arena-selector", "bw gui", true, "CHEST", 5, 4);
-        saveLobbyCommandItem("leave", "bw leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
+        saveLobbyCommandItem("leave", "leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
 
         /* Pre Game Command Items */
         savePreGameCommandItem("stats", "bw stats", false, getForCurrentVersion("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD"), 3, 0);
-        savePreGameCommandItem("leave", "bw leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
+        savePreGameCommandItem("leave", "leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
 
         /* Spectator Command Items */
         saveSpectatorCommandItem("teleporter", "bw teleporter", false, getForCurrentVersion("SKULL_ITEM", "SKULL_ITEM", "PLAYER_HEAD"), 3, 0);
-        saveSpectatorCommandItem("leave", "bw leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
+        saveSpectatorCommandItem("leave", "leave", false, getForCurrentVersion("BED", "BED", "RED_BED"), 0, 8);
 
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SIZE, 27);
         yml.addDefault(ConfigPath.GENERAL_CONFIGURATION_ARENA_SELECTOR_SETTINGS_SHOW_PLAYING, true);

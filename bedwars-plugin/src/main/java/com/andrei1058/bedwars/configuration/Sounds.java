@@ -63,6 +63,7 @@ public class Sounds {
         addDefSound(SOUNDS_COUNTDOWN_TICK_X + "2", BedWars.getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG"));
         addDefSound(SOUNDS_COUNTDOWN_TICK_X + "1", BedWars.getForCurrentVersion("CHICKEN_EGG_POP", "ENTITY_CHICKEN_EGG", "ENTITY_CHICKEN_EGG"));
         addDefSound(SOUND_GAME_START, BedWars.getForCurrentVersion("SLIME_ATTACK", "BLOCK_SLIME_FALL", "BLOCK_SLIME_BLOCK_FALL"));
+        addDefSound("Map", com.andrei1058.bedwars.BedWars.getForCurrentVersion("LEVEL_UP", "ENTITY_PLAYER_LEVELUP", "ENTITY_PLAYER_LEVELUP"));
 
         addDefSound(SOUNDS_KILL, BedWars.getForCurrentVersion("ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP", "ENTITY_EXPERIENCE_ORB_PICKUP"));
 
@@ -165,4 +166,9 @@ public class Sounds {
     public static void playFlySpeedChange(Player player) {
         playSound("FlySpeedChange", player);
     }
+
+    public static void MapSound(Player player) {
+        playSound("MapSound", player);
+    }
+
 }

@@ -62,6 +62,5 @@ public interface Party {
         owner.sendMessage(msg);
         target.sendMessage(msg);
     }
-
     boolean isInternal();
 }

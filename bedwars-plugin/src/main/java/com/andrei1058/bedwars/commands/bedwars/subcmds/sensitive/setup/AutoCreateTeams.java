@@ -1,4 +1,3 @@
-
 package com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive.setup;
 
 import com.andrei1058.bedwars.BedWars;
@@ -115,7 +114,7 @@ public class AutoCreateTeams extends SubCommand {
                     p.sendMessage("§6§lNEW TEAMS FOUND:");
                     for (String tf : found) {
                         String name = TeamColor.enName(tf);
-                        p.sendMessage("§f ▪ " + TeamColor.getChatColor(name) + name.replace("_", " "));
+                        p.spigot().sendMessage(Misc.msgHoverClick("§f ▪ " + TeamColor.getChatColor(name) + name.replace("_", " "),"§fClick to create " + TeamColor.getChatColor(name), "/" + getParent().getName() + " createTeam " + name + " " + name, ClickEvent.Action.RUN_COMMAND));
                     }
                     p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7§lClick here to create found teams.", "§fClick to create found teams!", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
                 }
@@ -190,7 +189,7 @@ public class AutoCreateTeams extends SubCommand {
                     p.sendMessage("§6§lNEW TEAMS FOUND:");
                     for (Byte tf : found) {
                         String name = TeamColor.enName(tf);
-                        p.sendMessage("§f ▪ " + TeamColor.getChatColor(name) + name.replace('_', ' '));
+                        p.spigot().sendMessage(Misc.msgHoverClick("§f ▪ " + TeamColor.getChatColor(name) + name.replace("_", " "),"§fClick to create " + TeamColor.getChatColor(name), "/" + getParent().getName() + " createTeam " + name + " " + name, ClickEvent.Action.RUN_COMMAND));
                     }
                     p.spigot().sendMessage(Misc.msgHoverClick("§6 ▪ §7§lClick here to create found teams.", "§fClick to create found teams!", "/" + getParent().getName() + " " + getSubCommandName(), ClickEvent.Action.RUN_COMMAND));
                 }
