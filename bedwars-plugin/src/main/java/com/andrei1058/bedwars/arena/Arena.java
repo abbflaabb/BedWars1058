@@ -972,7 +972,7 @@ public class Arena implements IArena {
                 }
             }
             // Optionally, disband the party after all members are removed from the arena
-             BedWars.getParty().disband(p);
+            BedWars.getParty().disband(p);
         }
 
         if (lastHit != null) {
