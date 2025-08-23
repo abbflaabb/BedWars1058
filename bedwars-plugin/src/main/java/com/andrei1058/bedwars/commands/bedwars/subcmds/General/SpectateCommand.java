@@ -26,6 +26,27 @@ public class SpectateCommand extends BukkitCommand {
             p.sendMessage(Language.getMsg(p, Messages.COMMAND_SPECTATE_NO_PERMISSION));
             return true;
         }
+
+        // If a player name is provided
+        if (args.length > 0) {
+            Player targetPlayer = p.getServer().getPlayer(args[0]);
+            if (targetPlayer == null) {
+                p.sendMessage(Language.getMsg(p, Messages.COMMAND_NOT_FOUND_PLAYER_MATCH));
+                return true;
+            }
+
+            IArena targetArena = Arena.getArenaByPlayer(targetPlayer);
+            if (targetArena == null) {
+                p.sendMessage(Language.getMsg(p, Messages.COMMAND_SPECTATE_PLAYER_NOT_IN_ARENA));
+                return true;
+            }
+
+            // Make the player spectate the target's arena
+            targetArena.addSpectator(p, false, null);
+            return true;
+        }
+
+        // Original code for spectating current arena
         IArena arena = Arena.getArenaByPlayer(p);
         if (arena == null) {
             p.sendMessage(Language.getMsg(p, Messages.COMMAND_SPECTATE_NOT_IN_ARENA));

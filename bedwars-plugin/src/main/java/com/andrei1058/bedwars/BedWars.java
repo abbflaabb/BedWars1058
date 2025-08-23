@@ -26,14 +26,10 @@ import com.andrei1058.bedwars.arena.tasks.Refresh;
 import com.andrei1058.bedwars.arena.upgrades.BaseListener;
 import com.andrei1058.bedwars.arena.upgrades.HealPoolListner;
 import com.andrei1058.bedwars.commands.bedwars.MainCommand;
-import com.andrei1058.bedwars.commands.bedwars.subcmds.General.HelpCommand;
-import com.andrei1058.bedwars.commands.bedwars.subcmds.General.MapCommand;
-import com.andrei1058.bedwars.commands.bedwars.subcmds.General.SpectateCommand;
-import com.andrei1058.bedwars.commands.bedwars.subcmds.General.StartCommand;
-import com.andrei1058.bedwars.commands.bedwars.subcmds.General.SupportCommand;
+import com.andrei1058.bedwars.commands.bedwars.subcmds.General.*;
 import com.andrei1058.bedwars.commands.bedwars.subcmds.sensitive.SetEventCommand;
 import com.andrei1058.bedwars.commands.leave.LeaveCommand;
-import com.andrei1058.bedwars.commands.party.PartyCommand;
+//import com.andrei1058.bedwars.commands.party.PartyCommand;
 import com.andrei1058.bedwars.commands.rejoin.RejoinCommand;
 import com.andrei1058.bedwars.commands.shout.ShoutCommand;
 import com.andrei1058.bedwars.configuration.*;
@@ -75,6 +71,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -89,6 +86,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -101,6 +99,7 @@ public class BedWars extends JavaPlugin {
     public static ConfigManager signs, generators;
     public static MainConfig config;
     public static InvsibltyConfig InvsibltyConfig;
+    public static StreamDataConfig StreamDataConfig;
     public static ShopManager shop;
     public static StatsManager statsManager;
     public static BedWars plugin;
@@ -193,6 +192,9 @@ public class BedWars extends JavaPlugin {
 
         config = new MainConfig(this, "config");
         InvsibltyConfig = new InvsibltyConfig(this, "invisibility", this.getDataFolder().getPath());
+        StreamDataConfig = new StreamDataConfig(this, "StreamDataConfig", this.getDataFolder().getPath());
+
+
         generators = new GeneratorsConfig(this, "generators", this.getDataFolder().getPath());
         // Initialize signs config after the main config
         if (getServerType() != ServerType.BUNGEE) {
@@ -304,7 +306,6 @@ public class BedWars extends JavaPlugin {
         }
         Bukkit.getPluginManager().registerEvents(new ShopListener(), this);
         Bukkit.getPluginManager().registerEvents(new BuildLimit(), this);
-
 
         // Register setup-holograms fix
         registerEvents(new ChunkLoad());
@@ -580,15 +581,12 @@ public class BedWars extends JavaPlugin {
         if (!(nms.isBukkitCommandRegistered("leave") && getServerType() == ServerType.BUNGEE)) {
             nms.registerCommand("leave", new LeaveCommand("leave"));
         }
-        if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
-            Bukkit.getLogger().info("Registering /party command..");
-            nms.registerCommand("party", new PartyCommand("party"));
-        }
+//        if (getServerType() != ServerType.BUNGEE && config.getBoolean(ConfigPath.GENERAL_ENABLE_PARTY_CMD)) {
+//            Bukkit.getLogger().info("Registering /party command..");
+//            nms.registerCommand("party", new PartyCommand("party"));
+//        }
         if (!nms.isBukkitCommandRegistered("start")) {
             nms.registerCommand("start", new StartCommand("start"));
-        }
-        if (!nms.isBukkitCommandRegistered("help")) {
-            nms.registerCommand("help", new HelpCommand("help"));
         }
         if (!nms.isBukkitCommandRegistered("Support")) {
             nms.registerCommand("Support", new SupportCommand("Support"));
@@ -604,6 +602,14 @@ public class BedWars extends JavaPlugin {
         }
         if (!nms.isBukkitCommandRegistered("Map")) {
             nms.registerCommand("Map", new com.andrei1058.bedwars.commands.bedwars.subcmds.General.MapCommand("Map"));
+        }
+
+        // Register streams and link account commands
+        if (!nms.isBukkitCommandRegistered("streams")) {
+            nms.registerCommand("streams", new StreamsCommand("streams"));
+        }
+        if (!nms.isBukkitCommandRegistered("linkaccount")) {
+            nms.registerCommand("linkaccount", new LinkAccountCommand("linkaccount"));
         }
     }
 

@@ -13,6 +13,7 @@
     <version>${project.parent.version}</version>
 
     <repositories>
+
         <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>

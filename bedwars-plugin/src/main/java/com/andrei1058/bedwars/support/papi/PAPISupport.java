@@ -220,7 +220,8 @@ public class PAPISupport extends PlaceholderExpansion {
                 response = getAlivePlayersCount(a, player);
                 break;
         }
-
+// placeholder alive
+        // "BedWars-Solo"
         return response;
     }
 

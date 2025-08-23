@@ -151,8 +151,8 @@ public class Messages {
     public static String ARENA_SPECTATE_DENIED_SELECTOR = "arena-spectate-denied-selector";
     public static String ARENA_LEAVE_PARTY_DISBANDED = "arena-leave-party-disbanded";
     public static String COMMAND_LEAVE_PARTY_LEADER_LEFT = "command-leave-party-leader-left";
-
-
+    public static String COMMAND_SPECTATE_PLAYER_NOT_IN_ARENA = "command-spectate-player-not-in-arena";
+    public static String COMMAND_NOT_FOUND_PLAYER_MATCH = "command-not-found-player-match";
 
     // Fly Command Messages
     public static String FLY_CONSOLE_ONLY = "fly-console-only";
